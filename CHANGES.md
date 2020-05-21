@@ -1,10 +1,10 @@
 # CHANGES for jsdoc-jsonschema
 
-## 0.2.0 (unreleased)
+## 0.2.0
 
-- Enhancement: Add `tolerateCase` option (default `true`)
 - Enhancement: Adds `title` (from `@typedef name`)
-- Enhancment: Only adds `properties` if some present
+- Enhancment: Only add `properties` if some present
+- Enhancement: Add `tolerateCase` option (default now `true`)
 - Docs: Features, organize q's into FAQ; add q. re: becoming unable to
     express features from jsdoc
 
