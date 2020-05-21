@@ -1,4 +1,4 @@
-# CHANGES for jsdoc-to-jsonschema
+# CHANGES for jsdoc-jsonschema
 
 ## 0.1.0
 

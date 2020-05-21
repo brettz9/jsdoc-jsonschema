@@ -1,5 +1,5 @@
 {
-  "name": "jsdoc-to-jsonschema",
+  "name": "jsdoc-jsonschema",
   "version": "0.1.0",
   "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
   "main": "src/index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brettz9/jsdoc-to-jsonschema.git"
+    "url": "git+https://github.com/brettz9/jsdoc-jsonschema.git"
   },
   "keywords": [
     "jsdoc",
@@ -22,8 +22,8 @@
   "author": "Brett Zamir <brettz9@yahoo.com> (http://brett-zamir.me/)",
   "contributors": [],
   "license": "MIT",
-  "bugs": "https://github.com/brettz9/jsdoc-to-jsonschema/issues",
-  "homepage": "https://github.com/brettz9/jsdoc-to-jsonschema#readme",
+  "bugs": "https://github.com/brettz9/jsdoc-jsonschema/issues",
+  "homepage": "https://github.com/brettz9/jsdoc-jsonschema#readme",
   "engines": {
     "node": ">=10.0.0"
   },

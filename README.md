@@ -1,4 +1,4 @@
-# jsdoc-to-jsonschema
+# jsdoc-jsonschema
 
 Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support
 for nonstandard expansions).
@@ -9,13 +9,13 @@ single simple types!**
 ## Installation
 
 ```sh
-npm i jsdoc-to-jsonschema
+npm i jsdoc-jsonschema
 ```
 
 ## Usage
 
 ```js
-const {jsdocToJsonSchema} = require('jsdoc-to-jsonschema');
+const {jsdocToJsonSchema} = require('jsdoc-jsonschema');
 
 jsdocToJsonSchema(`
     /**

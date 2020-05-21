@@ -38,7 +38,7 @@ module.exports = {
     },
     rules: {
       'node/no-missing-require': ['error', {
-        allowModules: ['jsdoc-to-jsonschema']
+        allowModules: ['jsdoc-jsonschema']
       }],
       'no-unused-vars': ['error', {
         // varsIgnorePattern: 'value'
