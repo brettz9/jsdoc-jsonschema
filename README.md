@@ -19,11 +19,11 @@ from having to build both.
 
 ## Current features
 
-| JSDoc | JSON Schema | Notes
-|-----|-----|-----|
+| JSDoc | JSON Schema | Notes |
+|-------|-------------|-------|
 | `@typedef` | `{type: 'object'}` |
 | `@typedef typeName` | `{type: 'object', title: 'typeName'}` |
-| `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}}` | Wwith `tolerateCase` option not disabled, will allow `Integer`, etc., as well
+| `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
 
 ## FAQ
 
