@@ -17,13 +17,32 @@ from JSON Schema, but then they wouldn't be integrated into one's code),
 but since the information is redundant with JSON Schema, it can save time
 from having to build both.
 
-## Why not just use JSON Schema?
+## Current features
+
+| JSDoc | JSON Schema | Notes
+|-----|-----|-----|
+| `@typedef` | `{type: 'object'}` |
+| `@typedef typeName` | `{type: 'object', title: 'typeName'}` |
+| `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}}` | Wwith `tolerateCase` option not disabled, will allow `Integer`, etc., as well
+
+## FAQ
+
+### Why not just use JSON Schema?
 
 While JSON Schema is nicely structured for consumption by JavaScript,
 it is not integrated within one's code.
 
 And when the schema is discoverable within one's code in the context where
 it is defined and maintained, one is surely more likely to keep it up to date.
+
+### Won't you become unable to express certain JSON Schema features coming from JSDoc?
+
+JSDoc already has certain standard tags that can express certain JSON schema
+features like `type` and `properties`. We want to leverage those standard
+features where they exist.
+
+However, JSDoc can support definition of custom tags, so if necessary, we
+can add certain features that can be converted into other JSON Schema features.
 
 ## Installation
 

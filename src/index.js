@@ -18,9 +18,10 @@ const jsdocToJsonSchema = (jsdocStr, {
 } = {}) => {
   const parsed = commentParser(jsdocStr);
   return parsed.map((jsdocAST) => {
-    if (!jsdocAST.tags.some(({tag}) => {
+    const typedefTag = jsdocAST.tags.find(({tag}) => {
       return tag === 'typedef';
-    })) {
+    });
+    if (!typedefTag) {
       return null;
     }
     const properties = {};
@@ -55,10 +56,16 @@ const jsdocToJsonSchema = (jsdocStr, {
       });
       // console.log('parsedType', parsedType);
     });
-    return {
-      type: 'object',
-      properties
+    const schema = {
+      type: 'object'
     };
+    if (typedefTag.name) {
+      schema.title = typedefTag.name;
+    }
+    if (Object.keys(properties).length) {
+      schema.properties = properties;
+    }
+    return schema;
   }).filter((jsonSchema) => {
     return jsonSchema;
   });

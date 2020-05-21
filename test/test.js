@@ -27,27 +27,6 @@ const childType = `
  * @property {boolean} boolName
  */
 `;
-const nonTypedefBlock = `
-/**
- * @function SomeFunc
- * @param {string|null} strName
- * @param {boolean} boolName
- */
-`;
-
-const docWithTypeError = `
-  /**
-   * @typedef BadType
-   * @property {string&} val
-   */
-`;
-
-const docWithNonJsonSchemaType = `
-  /**
-   * @typedef BadType
-   * @property {something} val
-   */
-`;
 
 const docWithUpperCasedJsonSchemaType = `
 /**
@@ -62,6 +41,7 @@ describe('`jsdocToJsonSchema`', function () {
     // log(schema);
     expect(schema).to.deep.equal([{
       type: 'object',
+      title: 'ParentType',
       properties: {
         numName: {
           type: 'number'
@@ -69,8 +49,14 @@ describe('`jsdocToJsonSchema`', function () {
       }
     }]);
   });
-  it('converts a simple jsdoc block ignoring an irrelevant block', function () {
-    const schema = jsdocToJsonSchema(parentType + nonTypedefBlock);
+  it('converts a simple jsdoc block without a typedef name', function () {
+    const noNameTypedef = `
+    /**
+     * @typedef {PlainObject}
+     * @property {number} numName
+     */
+    `;
+    const schema = jsdocToJsonSchema(noNameTypedef);
     // log(schema);
     expect(schema).to.deep.equal([{
       type: 'object',
@@ -81,12 +67,57 @@ describe('`jsdocToJsonSchema`', function () {
       }
     }]);
   });
+  it('converts a simple jsdoc block without properties', function () {
+    const noNameTypedef = `
+    /**
+     * @typedef {PlainObject}
+     */
+    `;
+    const schema = jsdocToJsonSchema(noNameTypedef);
+    // log(schema);
+    expect(schema).to.deep.equal([{
+      type: 'object'
+    }]);
+  });
+  it('converts a simple jsdoc block ignoring an irrelevant block', function () {
+    const nonTypedefBlock = `
+    /**
+     * @function SomeFunc
+     * @param {string|null} strName
+     * @param {boolean} boolName
+     */
+    `;
+
+    const schema = jsdocToJsonSchema(parentType + nonTypedefBlock);
+    // log(schema);
+    expect(schema).to.deep.equal([{
+      type: 'object',
+      title: 'ParentType',
+      properties: {
+        numName: {
+          type: 'number'
+        }
+      }
+    }]);
+  });
   it('throws with jsdoc type error', function () {
+    const docWithTypeError = `
+      /**
+       * @typedef BadType
+       * @property {string&} val
+       */
+    `;
     expect(() => {
       jsdocToJsonSchema(docWithTypeError);
     }).to.throw(Error);
   });
   it('throws with non-JSON-Schema type', function () {
+    const docWithNonJsonSchemaType = `
+      /**
+       * @typedef BadType
+       * @property {something} val
+       */
+    `;
     expect(() => {
       jsdocToJsonSchema(docWithNonJsonSchemaType);
     }).to.throw(TypeError, 'Unknown type');
@@ -108,6 +139,7 @@ describe('`jsdocToJsonSchema`', function () {
       expect(schema).to.deep.equal([
         {
           type: 'object',
+          title: 'UpperCaseType',
           properties: {
             val: {
               type: 'number'
@@ -123,6 +155,7 @@ describe('`jsdocToJsonSchema`', function () {
     expect(schema).to.deep.equal([
       {
         type: 'object',
+        title: 'ParentType',
         properties: {
           numName: {
             type: 'number'
@@ -131,6 +164,7 @@ describe('`jsdocToJsonSchema`', function () {
       },
       {
         type: 'object',
+        title: 'ChildType',
         properties: {
           strName: {
             type: 'null'

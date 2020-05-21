@@ -3,6 +3,10 @@
 ## 0.2.0 (unreleased)
 
 - Enhancement: Add `tolerateCase` option (default `true`)
+- Enhancement: Adds `title` (from `@typedef name`)
+- Enhancment: Only adds `properties` if some present
+- Docs: Features, organize q's into FAQ; add q. re: becoming unable to
+    express features from jsdoc
 
 ## 0.1.2
 
