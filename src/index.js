@@ -25,13 +25,15 @@ const jsdocToJsonSchema = (jsdocStr, {
       return null;
     }
     const properties = {};
-    jsdocAST.tags.forEach(({tag, name, description, type}) => {
+    const required = [];
+    jsdocAST.tags.forEach(({tag, name, description, type, optional}) => {
       if (tag !== 'property') {
         return;
       }
       const parsedType = typeParser(type); // May throw
       traverse(parsedType, (node, ...args) => {
         // console.log('entered', node, args);
+        // eslint-disable-next-line default-case
         switch (node.type) {
         case 'NAME': {
           let {name: nodeName} = node;
@@ -50,10 +52,13 @@ const jsdocToJsonSchema = (jsdocStr, {
             property.description = description;
           }
           properties[name] = property;
+          if (!optional && !required.includes(name)) {
+            required.push(name);
+          }
           break;
-        } case 'UNION': // Todo: Will need handling
+        } /* case 'UNION': // Todo: Will need handling
         default:
-          break;
+          break; */
         }
       }, (node, ...args) => {
         // console.log('exited', node, args);
@@ -71,6 +76,9 @@ const jsdocToJsonSchema = (jsdocStr, {
     }
     if (Object.keys(properties).length) {
       schema.properties = properties;
+    }
+    if (required.length) {
+      schema.required = required;
     }
     return schema;
   }).filter((jsonSchema) => {

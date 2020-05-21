@@ -23,7 +23,7 @@ const parentType = `
 const childType = `
 /**
  * @typedef {ParentType} ChildType
- * @property {string|null} strName
+ * @property {string} strName
  * @property {boolean} boolName
  */
 `;
@@ -46,7 +46,10 @@ describe('`jsdocToJsonSchema`', function () {
         numName: {
           type: 'number'
         }
-      }
+      },
+      required: [
+        'numName'
+      ]
     }]);
   });
   it('converts a simple jsdoc block with descriptions', function () {
@@ -73,7 +76,10 @@ describe('`jsdocToJsonSchema`', function () {
           description: 'Property description 2',
           type: 'boolean'
         }
-      }
+      },
+      required: [
+        'numName', 'boolName'
+      ]
     }]);
   });
   it('converts a simple jsdoc block without a typedef name', function () {
@@ -91,7 +97,66 @@ describe('`jsdocToJsonSchema`', function () {
         numName: {
           type: 'number'
         }
-      }
+      },
+      required: [
+        'numName'
+      ]
+    }]);
+  });
+  it(
+    'converts a simple jsdoc block and avoids putting additional ' +
+      'fields into `required`',
+    function () {
+      const noNameTypedef = `
+      /**
+       * @typedef {PlainObject}
+       * @property {number} numName
+       * @property {string} numName
+       */
+      `;
+      const schema = jsdocToJsonSchema(noNameTypedef);
+      // log(schema);
+      expect(schema).to.deep.equal([{
+        type: 'object',
+        properties: {
+          numName: {
+            type: 'string'
+          }
+        },
+        required: [
+          'numName'
+        ]
+      }]);
+    }
+  );
+  it('converts a simple jsdoc block with an optional property', function () {
+    const noNameTypedef = `
+    /**
+     * @typedef {PlainObject} SomeType
+     * @property {number} [numName]
+     * @property {string} strName
+     * @property {boolean} [boolName=true]
+     */
+    `;
+    const schema = jsdocToJsonSchema(noNameTypedef);
+    // log(schema);
+    expect(schema).to.deep.equal([{
+      type: 'object',
+      properties: {
+        numName: {
+          type: 'number'
+        },
+        strName: {
+          type: 'string'
+        },
+        boolName: {
+          type: 'boolean'
+        }
+      },
+      title: 'SomeType',
+      required: [
+        'strName'
+      ]
     }]);
   });
   it('converts a simple jsdoc block without properties', function () {
@@ -110,7 +175,7 @@ describe('`jsdocToJsonSchema`', function () {
     const nonTypedefBlock = `
     /**
      * @function SomeFunc
-     * @param {string|null} strName
+     * @param {string} strName
      * @param {boolean} boolName
      */
     `;
@@ -124,7 +189,10 @@ describe('`jsdocToJsonSchema`', function () {
         numName: {
           type: 'number'
         }
-      }
+      },
+      required: [
+        'numName'
+      ]
     }]);
   });
   it('throws with jsdoc type error', function () {
@@ -171,7 +239,10 @@ describe('`jsdocToJsonSchema`', function () {
             val: {
               type: 'number'
             }
-          }
+          },
+          required: [
+            'val'
+          ]
         }
       ]);
     }
@@ -187,19 +258,25 @@ describe('`jsdocToJsonSchema`', function () {
           numName: {
             type: 'number'
           }
-        }
+        },
+        required: [
+          'numName'
+        ]
       },
       {
         type: 'object',
         title: 'ChildType',
         properties: {
           strName: {
-            type: 'null'
+            type: 'string'
           },
           boolName: {
             type: 'boolean'
           }
-        }
+        },
+        required: [
+          'strName', 'boolName'
+        ]
       }
     ]);
   });

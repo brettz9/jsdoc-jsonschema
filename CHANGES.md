@@ -1,8 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
-## 0.3.0 (unreleased)
+## 0.3.0
 
 - Enhancement: Support `typedef` and `property` description conversions
+- Enhancement: Add `required`
 
 ## 0.2.0
 
