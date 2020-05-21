@@ -106,11 +106,12 @@ into suitable schema features (e.g., intersections).
 
 ## To-dos
 
-1. Add to `required` array automatically for object unless determined is
+1. Allow reference to other `@typedef` types (**`definitions`**?)
+1. Add to **`required` array** automatically for object unless determined is
     optional.
+1. Get working with **nested objects and arrays** (nested with `.`)
 1. Get working with **union types** (and for TS, **intersection types** once
     jsdoctypeparser may support)
-1. Get working with **nested objects and arrays**
 1. On finding literals, add as **`enum`**
 
 ## Lower-priority to-dos
