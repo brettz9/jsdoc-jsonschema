@@ -25,7 +25,7 @@ const jsdocToJsonSchema = (jsdocStr, {
       return null;
     }
     const properties = {};
-    jsdocAST.tags.forEach(({tag, name, type}) => {
+    jsdocAST.tags.forEach(({tag, name, description, type}) => {
       if (tag !== 'property') {
         return;
       }
@@ -43,9 +43,13 @@ const jsdocToJsonSchema = (jsdocStr, {
           }
           // Todo: This should be added to a dynamic `properties`,
           //   depending on how nested we are
-          properties[name] = {
+          const property = {
             type: nodeName
           };
+          if (description) {
+            property.description = description;
+          }
+          properties[name] = property;
           break;
         } case 'UNION': // Todo: Will need handling
         default:
@@ -61,6 +65,9 @@ const jsdocToJsonSchema = (jsdocStr, {
     };
     if (typedefTag.name) {
       schema.title = typedefTag.name;
+    }
+    if (jsdocAST.description) { // `@typedef` does not have its own description
+      schema.description = jsdocAST.description;
     }
     if (Object.keys(properties).length) {
       schema.properties = properties;

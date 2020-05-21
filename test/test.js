@@ -49,6 +49,33 @@ describe('`jsdocToJsonSchema`', function () {
       }
     }]);
   });
+  it('converts a simple jsdoc block with descriptions', function () {
+    const typedefWithDescriptions = `
+    /**
+     * Here is the typedef description.
+     * @typedef {PlainObject} ParentType
+     * @property {number} numName Property description 1
+     * @property {boolean} boolName Property description 2
+     */
+    `;
+    const schema = jsdocToJsonSchema(typedefWithDescriptions);
+    // log(schema);
+    expect(schema).to.deep.equal([{
+      type: 'object',
+      title: 'ParentType',
+      description: 'Here is the typedef description.',
+      properties: {
+        numName: {
+          description: 'Property description 1',
+          type: 'number'
+        },
+        boolName: {
+          description: 'Property description 2',
+          type: 'boolean'
+        }
+      }
+    }]);
+  });
   it('converts a simple jsdoc block without a typedef name', function () {
     const noNameTypedef = `
     /**

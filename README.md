@@ -22,8 +22,9 @@ from having to build both.
 | JSDoc | JSON Schema | Notes |
 |-------|-------------|-------|
 | `@typedef` | `{type: 'object'}` |
+| `/** Some desc.<br><br>* @typedef */`  | `{type: 'object', description: 'Some desc.'}` |
 | `@typedef typeName` | `{type: 'object', title: 'typeName'}` |
-| `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
+| `@property {integer} propName Prop desc.` | `{properties: {propName: {type: 'integer', description: 'Prop desc.'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
 
 ## FAQ
 
