@@ -113,6 +113,7 @@ into suitable schema features (e.g., intersections).
 1. Get working with **nested objects and arrays** (nested with `.`)
 1. Get working with **union types** (and for TS, **intersection types** once
     jsdoctypeparser may support)
+1. **Nested types**
 1. On finding literals, add as **`enum`**
 
 ## Lower-priority to-dos
