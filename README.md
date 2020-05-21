@@ -55,6 +55,14 @@ jsdocToJsonSchema(`
 }
 ```
 
+### Options
+
+As a second argument, one can supply an options object with the following properties:
+
+- `tolerateCase` - Boolean (default `true`) on whether to allow types defined
+    in different casing, e.g., `Object`, to avoid throwing and be converted to
+    their lower-case counterpart understood by JSON Schema.
+
 ## Scope
 
 This project does not aim to convert other similar sources such as TypeScript

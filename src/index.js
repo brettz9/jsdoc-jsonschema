@@ -9,9 +9,13 @@ const jsonSchemaTypes = new Set(
 
 /**
  * @param {string} jsdocStr
+ * @param {PlainObject} cfg
+ * @param {boolean} cfg.tolerateCase
  * @returns {JSON}
  */
-const jsdocToJsonSchema = (jsdocStr) => {
+const jsdocToJsonSchema = (jsdocStr, {
+  tolerateCase = true
+} = {}) => {
   const parsed = commentParser(jsdocStr);
   return parsed.map((jsdocAST) => {
     if (!jsdocAST.tags.some(({tag}) => {
@@ -28,17 +32,21 @@ const jsdocToJsonSchema = (jsdocStr) => {
       traverse(parsedType, (node, ...args) => {
         // console.log('entered', node, args);
         switch (node.type) {
-        case 'NAME':
-          if (!jsonSchemaTypes.has(node.name)) {
+        case 'NAME': {
+          let {name: nodeName} = node;
+          if (tolerateCase) {
+            nodeName = nodeName.toLowerCase();
+          }
+          if (!jsonSchemaTypes.has(nodeName)) {
             throw new TypeError('Unknown type');
           }
           // Todo: This should be added to a dynamic `properties`,
           //   depending on how nested we are
           properties[name] = {
-            type: node.name
+            type: nodeName
           };
           break;
-        case 'UNION': // Todo: Will need handling
+        } case 'UNION': // Todo: Will need handling
         default:
           break;
         }

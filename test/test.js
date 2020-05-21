@@ -49,6 +49,13 @@ const docWithNonJsonSchemaType = `
    */
 `;
 
+const docWithUpperCasedJsonSchemaType = `
+/**
+ * @typedef UpperCaseType
+ * @property {Number} val
+ */
+`;
+
 describe('`jsdocToJsonSchema`', function () {
   it('converts a simple jsdoc block', function () {
     const schema = jsdocToJsonSchema(parentType);
@@ -84,6 +91,32 @@ describe('`jsdocToJsonSchema`', function () {
       jsdocToJsonSchema(docWithNonJsonSchemaType);
     }).to.throw(TypeError, 'Unknown type');
   });
+  it(
+    'throws with `tolerateCase: false` and upper-cased JSON-Schema type',
+    function () {
+      expect(() => {
+        jsdocToJsonSchema(docWithUpperCasedJsonSchemaType, {
+          tolerateCase: false
+        });
+      }).to.throw(TypeError, 'Unknown type');
+    }
+  );
+  it(
+    'accepts upper-cased JSON-Schema type with default `tolerateCase: true`',
+    function () {
+      const schema = jsdocToJsonSchema(docWithUpperCasedJsonSchemaType);
+      expect(schema).to.deep.equal([
+        {
+          type: 'object',
+          properties: {
+            val: {
+              type: 'number'
+            }
+          }
+        }
+      ]);
+    }
+  );
   it('converts two jsdoc blocks together', function () {
     const schema = jsdocToJsonSchema(parentType + childType);
     // log(schema);
