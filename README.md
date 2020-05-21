@@ -84,3 +84,13 @@ into suitable schema features (e.g., intersections).
     [json-schema-to-typescript](https://github.com/bcherny/json-schema-to-typescript)
 - Linting your JSDoc comments:
     [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc)
+
+## To-dos
+
+1. Get working with **union types**
+1. Get working with **nested objects and arrays**
+1. Option to **save to file** (based on `@typedef` tag name and/or other
+    custom tags?)
+1. Add method to support **parsing entire `import`/`require` pipeline** for
+    `@typedef`'s for conversion to schemas (could use
+    [es-file-traverse](https://github.com/brettz9/es-file-traverse))
