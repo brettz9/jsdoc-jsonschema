@@ -106,8 +106,18 @@ into suitable schema features (e.g., intersections).
 
 ## To-dos
 
-1. Get working with **union types**
+1. Add to `required` array automatically for object unless determined is
+    optional.
+1. Get working with **union types** (and for TS, **intersection types** once
+    jsdoctypeparser may support)
 1. Get working with **nested objects and arrays**
+1. On finding literals, add as **`enum`**
+
+## Lower-priority to-dos
+
+1. Allow **format map** so type can be added with `format` (e.g., "HTML" ->
+    `type: string, format: 'html'`)
+1. Convert TS negated type to **`not`**?
 1. Option to **save to file** (based on `@typedef` tag name and/or other
     custom tags?)
 1. Add method to support **parsing entire `import`/`require` pipeline** for
