@@ -74,3 +74,5 @@ into suitable schema features (e.g., intersections).
     - [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator)
 - TypeScript to jsdoc:
     [json-schema-to-typescript](https://github.com/bcherny/json-schema-to-typescript)
+- Linting your JSDoc comments:
+    [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc)
