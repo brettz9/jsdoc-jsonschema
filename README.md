@@ -56,10 +56,10 @@ npm i jsdoc-jsonschema
 const {jsdocToJsonSchema} = require('jsdoc-jsonschema');
 
 jsdocToJsonSchema(`
-    /**
-     * @typedef {PlainObject} ParentType
-     * @property {number} numName
-     */
+  /**
+   * @typedef {PlainObject} ParentType
+   * @property {number} numName
+   */
 `);
 ```
 
