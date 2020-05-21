@@ -1,0 +1,58 @@
+{
+  "name": "jsdoc-to-jsonschema",
+  "version": "0.1.0",
+  "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
+  "main": "src/index.js",
+  "scripts": {
+    "eslint": "eslint --ext=js,md,html .",
+    "mocha": "mocha --require chai/register-expect --inline-diffs",
+    "nyc": "nyc --cache=false npm run mocha",
+    "test": "npm run eslint && npm run nyc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brettz9/jsdoc-to-jsonschema.git"
+  },
+  "keywords": [
+    "jsdoc",
+    "json-schema",
+    "jsonschema",
+    "typedef"
+  ],
+  "author": "Brett Zamir <brettz9@yahoo.com> (http://brett-zamir.me/)",
+  "contributors": [],
+  "license": "MIT",
+  "bugs": "https://github.com/brettz9/jsdoc-to-jsonschema/issues",
+  "homepage": "https://github.com/brettz9/jsdoc-to-jsonschema#readme",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "comment-parser": "^0.7.4",
+    "jsdoctypeparser": "^6.1.0"
+  },
+  "devDependencies": {
+    "@mysticatea/eslint-plugin": "^13.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.0.0",
+    "eslint-config-ash-nazg": "^22.1.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-array-func": "^3.1.6",
+    "eslint-plugin-compat": "^3.6.0",
+    "eslint-plugin-eslint-comments": "^3.1.2",
+    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsdoc": "^25.4.2",
+    "eslint-plugin-markdown": "^1.0.2",
+    "eslint-plugin-no-unsanitized": "^3.1.1",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-sonarjs": "^0.5.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-unicorn": "^20.0.0",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1",
+    "typescript": "^3.9.3"
+  }
+}
