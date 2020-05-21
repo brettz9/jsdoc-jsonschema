@@ -37,9 +37,9 @@ const docWithUpperCasedJsonSchemaType = `
 
 describe('`jsdocToJsonSchema`', function () {
   it('converts a simple jsdoc block', function () {
-    const schema = jsdocToJsonSchema(parentType);
+    const schemas = jsdocToJsonSchema(parentType);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    const expectedSchema = {
       type: 'object',
       title: 'ParentType',
       properties: {
@@ -50,7 +50,8 @@ describe('`jsdocToJsonSchema`', function () {
       required: [
         'numName'
       ]
-    }]);
+    };
+    expect(schemas).to.deep.equal([expectedSchema]);
   });
   it('converts a simple jsdoc block with descriptions', function () {
     const typedefWithDescriptions = `
@@ -61,9 +62,9 @@ describe('`jsdocToJsonSchema`', function () {
      * @property {boolean} boolName Property description 2
      */
     `;
-    const schema = jsdocToJsonSchema(typedefWithDescriptions);
+    const schemas = jsdocToJsonSchema(typedefWithDescriptions);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    expect(schemas).to.deep.equal([{
       type: 'object',
       title: 'ParentType',
       description: 'Here is the typedef description.',
@@ -89,9 +90,9 @@ describe('`jsdocToJsonSchema`', function () {
      * @property {number} numName
      */
     `;
-    const schema = jsdocToJsonSchema(noNameTypedef);
+    const schemas = jsdocToJsonSchema(noNameTypedef);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    expect(schemas).to.deep.equal([{
       type: 'object',
       properties: {
         numName: {
@@ -114,9 +115,9 @@ describe('`jsdocToJsonSchema`', function () {
        * @property {string} numName
        */
       `;
-      const schema = jsdocToJsonSchema(noNameTypedef);
+      const schemas = jsdocToJsonSchema(noNameTypedef);
       // log(schema);
-      expect(schema).to.deep.equal([{
+      expect(schemas).to.deep.equal([{
         type: 'object',
         properties: {
           numName: {
@@ -138,9 +139,9 @@ describe('`jsdocToJsonSchema`', function () {
      * @property {boolean} [boolName=true]
      */
     `;
-    const schema = jsdocToJsonSchema(noNameTypedef);
+    const schemas = jsdocToJsonSchema(noNameTypedef);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    expect(schemas).to.deep.equal([{
       type: 'object',
       properties: {
         numName: {
@@ -165,9 +166,9 @@ describe('`jsdocToJsonSchema`', function () {
      * @typedef {PlainObject}
      */
     `;
-    const schema = jsdocToJsonSchema(noNameTypedef);
+    const schemas = jsdocToJsonSchema(noNameTypedef);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    expect(schemas).to.deep.equal([{
       type: 'object'
     }]);
   });
@@ -180,9 +181,9 @@ describe('`jsdocToJsonSchema`', function () {
      */
     `;
 
-    const schema = jsdocToJsonSchema(parentType + nonTypedefBlock);
+    const schemas = jsdocToJsonSchema(parentType + nonTypedefBlock);
     // log(schema);
-    expect(schema).to.deep.equal([{
+    expect(schemas).to.deep.equal([{
       type: 'object',
       title: 'ParentType',
       properties: {
@@ -230,8 +231,8 @@ describe('`jsdocToJsonSchema`', function () {
   it(
     'accepts upper-cased JSON-Schema type with default `tolerateCase: true`',
     function () {
-      const schema = jsdocToJsonSchema(docWithUpperCasedJsonSchemaType);
-      expect(schema).to.deep.equal([
+      const schemas = jsdocToJsonSchema(docWithUpperCasedJsonSchemaType);
+      expect(schemas).to.deep.equal([
         {
           type: 'object',
           title: 'UpperCaseType',
@@ -248,9 +249,9 @@ describe('`jsdocToJsonSchema`', function () {
     }
   );
   it('converts two jsdoc blocks together', function () {
-    const schema = jsdocToJsonSchema(parentType + childType);
+    const schemas = jsdocToJsonSchema(parentType + childType);
     // log(schema);
-    expect(schema).to.deep.equal([
+    expect(schemas).to.deep.equal([
       {
         type: 'object',
         title: 'ParentType',
