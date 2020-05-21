@@ -114,6 +114,9 @@ into suitable schema features (e.g., intersections).
     jsdoctypeparser may support)
 1. **Nested types**
 1. On finding literals, add as **`enum`**
+1. Use [json-schema-to-jsdoc](https://github.com/n3ps/json-schema-to-jsdoc) in
+    tests to sanity check (and ensure features we are using are mapping
+    in other direction)
 
 ## Lower-priority to-dos
 
