@@ -1,5 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.1.2
+
+- Fix: Throw with non-JSON-Schema type
+
 ## 0.1.1
 
 - Build: Remove nyc output

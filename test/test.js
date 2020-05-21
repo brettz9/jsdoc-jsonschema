@@ -38,7 +38,14 @@ const nonTypedefBlock = `
 const docWithTypeError = `
   /**
    * @typedef BadType
-   * @property {string&}
+   * @property {string&} val
+   */
+`;
+
+const docWithNonJsonSchemaType = `
+  /**
+   * @typedef BadType
+   * @property {something} val
    */
 `;
 
@@ -71,6 +78,11 @@ describe('`jsdocToJsonSchema`', function () {
     expect(() => {
       jsdocToJsonSchema(docWithTypeError);
     }).to.throw(Error);
+  });
+  it('throws with non-JSON-Schema type', function () {
+    expect(() => {
+      jsdocToJsonSchema(docWithNonJsonSchemaType);
+    }).to.throw(TypeError, 'Unknown type');
   });
   it('converts two jsdoc blocks together', function () {
     const schema = jsdocToJsonSchema(parentType + childType);

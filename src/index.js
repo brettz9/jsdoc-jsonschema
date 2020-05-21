@@ -3,6 +3,10 @@
 const commentParser = require('comment-parser');
 const {parse: typeParser, traverse} = require('jsdoctypeparser');
 
+const jsonSchemaTypes = new Set(
+  ['null', 'boolean', 'object', 'array', 'number', 'string', 'integer']
+);
+
 /**
  * @param {string} jsdocStr
  * @returns {JSON}
@@ -25,6 +29,9 @@ const jsdocToJsonSchema = (jsdocStr) => {
         // console.log('entered', node, args);
         switch (node.type) {
         case 'NAME':
+          if (!jsonSchemaTypes.has(node.name)) {
+            throw new TypeError('Unknown type');
+          }
           // Todo: This should be added to a dynamic `properties`,
           //   depending on how nested we are
           properties[name] = {
