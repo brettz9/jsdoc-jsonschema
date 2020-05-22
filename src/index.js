@@ -33,7 +33,6 @@ const jsdocToJsonSchema = (jsdocStr, {
       const parsedType = typeParser(type); // May throw
       traverse(parsedType, (node, ...args) => {
         // console.log('entered', node, args);
-        // eslint-disable-next-line default-case
         switch (node.type) {
         case 'NAME': {
           let {name: nodeName} = node;
@@ -41,7 +40,7 @@ const jsdocToJsonSchema = (jsdocStr, {
             nodeName = nodeName.toLowerCase();
           }
           if (!jsonSchemaTypes.has(nodeName)) {
-            throw new TypeError('Unknown type');
+            throw new TypeError(`Unsupported jsdoc name ${nodeName}`);
           }
           // Todo: This should be added to a dynamic `properties`,
           //   depending on how nested we are
@@ -56,9 +55,32 @@ const jsdocToJsonSchema = (jsdocStr, {
             required.push(name);
           }
           break;
-        } /* case 'UNION': // Todo: Will need handling
-        default:
+        /* } case 'UNION': { // Todo: Will need handling
+          const checkForEnums = () => {
+            const foundType = [
+              ['STRING_VALUE', 'string']
+            ].find(([astType, jsonSchemaType]) => {
+              if (
+                // eslint-disable-next-line valid-typeof
+                typeof node.left.type === astType &&
+                // eslint-disable-next-line valid-typeof
+                typeof node.right.type === astType
+                // Todo: Also check recursively if node.right is a UNION
+              ) {
+                return true;
+              }
+              return false;
+            });
+            if (foundType) {
+              // Todo: Need to populate `enum` recursively and add to property
+              const enumArr = [];
+              enumArr.push(foundType);
+            }
+          };
+          checkForEnums();
           break; */
+        } default:
+          throw new TypeError(`Unsupported jsdoc type ${node.type}`);
         }
       }, (node, ...args) => {
         // console.log('exited', node, args);

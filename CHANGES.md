@@ -1,5 +1,11 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.4.0
+
+- Enhancement: "Unkown type" -> "Unsupported jsdoc name <name>"
+- Enhancement: Throw "Unsupported jsdoc type <type>"
+- Refactoring: Begin UNION work (commented out and with skipped test)
+
 ## 0.3.0
 
 - Enhancement: Support `typedef` and `property` description conversions

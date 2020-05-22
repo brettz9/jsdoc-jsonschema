@@ -53,6 +53,30 @@ describe('`jsdocToJsonSchema`', function () {
     };
     expect(schemas).to.deep.equal([expectedSchema]);
   });
+  it.skip('converts a simple jsdoc block with literals', function () {
+    const literalType = `
+    /**
+     * @typedef {PlainObject} LiteralType
+     * @property {"abc"|"def"|"ghi"} enumName
+     */
+    `;
+    const schemas = jsdocToJsonSchema(literalType);
+    // log(schema);
+    const expectedSchema = {
+      type: 'object',
+      title: 'LiteralType',
+      properties: {
+        enumName: {
+          type: 'number',
+          enum: ['abc', 'def']
+        }
+      },
+      required: [
+        'numName'
+      ]
+    };
+    expect(schemas).to.deep.equal([expectedSchema]);
+  });
   it('converts a simple jsdoc block with descriptions', function () {
     const typedefWithDescriptions = `
     /**
@@ -207,16 +231,16 @@ describe('`jsdocToJsonSchema`', function () {
       jsdocToJsonSchema(docWithTypeError);
     }).to.throw(Error);
   });
-  it('throws with non-JSON-Schema type', function () {
-    const docWithNonJsonSchemaType = `
+  it('throws with non-supported jsdoc type', function () {
+    const docWithNonSupportedJSDocType = `
       /**
-       * @typedef BadType
-       * @property {something} val
+       * @typedef UnrecognizedJSDocType
+       * @property {external:outsideType} jsdocNameWithUnrecognizedType
        */
     `;
     expect(() => {
-      jsdocToJsonSchema(docWithNonJsonSchemaType);
-    }).to.throw(TypeError, 'Unknown type');
+      jsdocToJsonSchema(docWithNonSupportedJSDocType);
+    }).to.throw(TypeError, 'Unsupported jsdoc type EXTERNAL');
   });
   it(
     'throws with `tolerateCase: false` and upper-cased JSON-Schema type',
@@ -225,7 +249,7 @@ describe('`jsdocToJsonSchema`', function () {
         jsdocToJsonSchema(docWithUpperCasedJsonSchemaType, {
           tolerateCase: false
         });
-      }).to.throw(TypeError, 'Unknown type');
+      }).to.throw(TypeError, 'Unsupported jsdoc name Number');
     }
   );
   it(
