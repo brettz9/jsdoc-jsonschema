@@ -2,11 +2,12 @@
 
 const util = require('util');
 const chai = require('chai');
+const jsonSchemaToJSDoc = require('json-schema-to-jsdoc');
 const {jsdocToJsonSchema} = require('../');
 
 chai.config.truncateThreshold = 0;
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars -- Use during debugging
 const log = (arg) => {
   console.log(util.inspect(arg, {
     showHidden: false, // e.g., `length`
@@ -76,6 +77,8 @@ describe('`jsdocToJsonSchema`', function () {
       ]
     };
     expect(schemas).to.deep.equal([expectedSchema]);
+    const schemaToJSDoc = jsonSchemaToJSDoc(expectedSchema);
+    expect(schemaToJSDoc).to.equal(parentType);
   });
   it('converts a simple jsdoc block with descriptions', function () {
     const typedefWithDescriptions = `
