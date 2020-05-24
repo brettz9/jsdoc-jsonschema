@@ -1,5 +1,18 @@
 # CHANGES for jsdoc-jsonschema
 
+## ?
+
+- Breaking change: Error: "Unsupported jsdoc name <name>" ->
+    "Unsupported jsdoc type name <name>"
+- Enhancement: string and number unions -> enums
+- Enhancement: single string and number
+- Enhancement: Support `@property` without type portion
+- Enhancement: `preferInteger` option to force `integer` type when possible
+- Linting: As per latest ash-nazg
+- Testing: Use lcov reporter for nyc
+- npm: Ignore coverage
+- npm: Update jsdoctypeparser, comment-parser, devDeps.
+
 ## 0.4.0
 
 - Enhancement: "Unkown type" -> "Unsupported jsdoc name <name>"

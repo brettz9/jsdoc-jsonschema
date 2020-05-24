@@ -9,6 +9,12 @@ module.exports = {
     browser: false,
     es6: true
   },
+  settings: {
+    polyfills: [
+      'Number.isInteger',
+      'Number.parseFloat'
+    ]
+  },
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'

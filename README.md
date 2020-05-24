@@ -1,7 +1,7 @@
 # jsdoc-jsonschema
 
-Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support
-for nonstandard expansions).
+Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with
+support for nonstandard expansions).
 
 **This project is not yet complete; it currently only works with
 single simple types!**
@@ -25,6 +25,8 @@ from having to build both.
 | `/** Some desc.\n\n* @typedef */` | `{type: 'object', description: 'Some desc.'}` |
 | `@typedef typeName` | `{type: 'object', title: 'typeName'}` |
 | `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}, required: ['propName']}`
+| `@property {3\|4\|5} propName` | `{properties: {propName: {type: 'number', enum: [3, 4, 5]}}, required: ['propName']}` | Can force to `integer` type
+| `@typedef {3\|4\|5}` | `{type: 'number', enum: [3, 4, 5]}` | Can force to `integer` type
 | `@property {integer} [propName] Prop desc.` | `{properties: {propName: {type: 'integer', description: 'Prop desc.'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
 
 ## FAQ
@@ -78,7 +80,8 @@ jsdocToJsonSchema(`
 
 ### Options
 
-As a second argument, one can supply an options object with the following properties:
+As a second argument, one can supply an options object with the following
+properties:
 
 - `tolerateCase` - Boolean (default `true`) on whether to allow types defined
     in different casing, e.g., `Object`, to avoid throwing and be converted to
@@ -90,9 +93,9 @@ This project does not aim to convert other similar sources such as TypeScript
 definition files (though see the links below for that).
 
 However, it is, for now, using [`jsdoctypeparser`](https://github.com/jsdoctypeparser/jsdoctypeparser/)
-(over the standard jsdoc [catharsis](https://github.com/hegemonic/catharsis)) so that, in theory, we
-could allow conversion of TypeScript-specific types within jsdoc comments
-into suitable schema features (e.g., intersections).
+(over the standard jsdoc [catharsis](https://github.com/hegemonic/catharsis))
+so that, in theory, we could allow conversion of TypeScript-specific types
+within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## See also
 
@@ -108,23 +111,26 @@ into suitable schema features (e.g., intersections).
 
 ## To-dos
 
-1. Allow reference to other `@typedef` types (**`definitions`**?)
 1. Get working with **nested objects and arrays** (nested with `.`)
-1. Get working with **union types** (and for TS, **intersection types** once
-    jsdoctypeparser may support)
-1. **Nested types**
-1. On finding literals, add as **`enum`**
-1. Use [json-schema-to-jsdoc](https://github.com/n3ps/json-schema-to-jsdoc) in
-    tests to sanity check (and ensure features we are using are mapping
-    in other direction)
+1. Allow **format map** so type can be added with `format` (e.g., "HTML" ->
+    `type: string, format: 'html'`); also support in `json-schema-to-jsdoc`
+    ([#40](https://github.com/n3ps/json-schema-to-jsdoc/issues/40))
+1. Allow reference to other `@typedef` types (**`definitions`**?) Probably
+    need to also add support in `json-schema-to-jsdoc`
+    ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41)
 
 ## Lower-priority to-dos
 
-1. Allow **format map** so type can be added with `format` (e.g., "HTML" ->
-    `type: string, format: 'html'`)
+1. Get working with mixed **union types** (and for TS, **intersection types**)
+1. **Nested types**, e.g., nullable
+1. Use `title` with `@property` despite being redundant with `properties` key?
+1. Add mixed literals as **`enum`** with `type` array
 1. Convert TS negated type to **`not`**?
+1. Option to **read from file**, optionally filtering out only the `@typedef`'s
+    of interest (by whitelist and/or blacklist)
 1. Option to **save to file** (based on `@typedef` tag name and/or other
     custom tags?)
+1. **Binary**
 1. Add method to support **parsing entire `import`/`require` pipeline** for
     `@typedef`'s for conversion to schemas (could use
     [es-file-traverse](https://github.com/brettz9/es-file-traverse))

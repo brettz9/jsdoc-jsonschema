@@ -9,6 +9,12 @@
     "nyc": "nyc --cache=false npm run mocha",
     "test": "npm run eslint && npm run nyc"
   },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brettz9/jsdoc-jsonschema.git"
@@ -28,21 +34,21 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "comment-parser": "^0.7.5",
-    "jsdoctypeparser": "^8.0.0"
+    "comment-parser": "^0.7.6",
+    "jsdoctypeparser": "^9.0.0"
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^13.0.0",
     "chai": "^4.2.0",
-    "eslint": "^7.4.0",
-    "eslint-config-ash-nazg": "^22.5.1",
+    "eslint": "^7.7.0",
+    "eslint-config-ash-nazg": "^22.7.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-array-func": "^3.1.6",
+    "eslint-plugin-array-func": "^3.1.7",
     "eslint-plugin-compat": "^3.8.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-html": "^6.0.3",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsdoc": "^28.6.1",
+    "eslint-plugin-jsdoc": "^30.2.3",
     "eslint-plugin-markdown": "^1.0.2",
     "eslint-plugin-no-unsanitized": "^3.1.2",
     "eslint-plugin-no-use-extend-native": "^0.5.0",
@@ -50,10 +56,10 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-sonarjs": "^0.5.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^20.1.0",
-    "json-schema-to-jsdoc": "1.0.0",
-    "mocha": "^8.0.1",
+    "eslint-plugin-unicorn": "^21.0.0",
+    "json-schema-to-jsdoc": "https://github.com/n3ps/json-schema-to-jsdoc#master",
+    "mocha": "^8.1.1",
     "nyc": "^15.1.0",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   }
 }
