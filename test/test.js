@@ -57,6 +57,16 @@ const parentType = `
  * @property {number} numName
  */
 `;
+
+const nestedType = `
+/**
+ * @typedef {PlainObject} NestedType
+ * @property {object} cfg
+ * @property {string} cfg.requiredProp
+ * @property {number} [cfg.optionalProp]
+ */
+`;
+
 /*
 const childType = `
 /**
@@ -610,6 +620,39 @@ describe('`jsdocToJsonSchema`', function () {
     // log(jsdoc);
     expect(jsdoc).to.equal(arrayTypedef);
     */
+  });
+
+  it('converts a nested object jsdoc block', function () {
+    const schemas = jsdocToJsonSchema(nestedType);
+    // log(schemas[0]);
+    const expectedSchema = {
+      type: 'object',
+      title: 'NestedType',
+      properties: {
+        cfg: {
+          type: 'object',
+          properties: {
+            requiredProp: {
+              type: 'string'
+            },
+            optionalProp: {
+              type: 'number'
+            }
+          },
+          required: [
+            'requiredProp'
+          ]
+        }
+      },
+      required: [
+        'cfg'
+      ]
+    };
+    expect(schemas).to.deep.equal([expectedSchema]);
+
+    const jsdoc = schemaToJSDoc(expectedSchema);
+    // log(jsdoc);
+    expect(jsdoc).to.equal(nestedType);
   });
 
   it('throws with jsdoc type error', function () {
