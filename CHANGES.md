@@ -1,5 +1,10 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.8.0
+
+- Enhancement: Support nested objects and arrays (nested with `.`)
+- npm: Update devDeps.
+
 ## 0.7.0
 
 - Enhancement: Allow arrays/items

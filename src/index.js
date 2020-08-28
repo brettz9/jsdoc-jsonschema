@@ -95,8 +95,6 @@ function getSchemaBase (typeNode, {
     ) {
       throw new TypeError(`Unsupported jsdoc type name ${typeName}`);
     }
-    // Todo: This should be added to a dynamic `properties`,
-    //   depending on how nested we are
     schema = {
       type: booleanLiterals.has(typeName) ? 'boolean' : typeName
     };
@@ -191,39 +189,35 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
       // Ignore
     }
 
-    let schema;
+    let rootSchema;
     if (parsedTypedef.type) {
-      schema = getSchemaBase(parsedTypedef, {
+      rootSchema = getSchemaBase(parsedTypedef, {
         ...cfg,
         throwOnUnrecognizedName: false
       });
     }
-    if (!schema) {
-      schema = {
+    if (!rootSchema) {
+      rootSchema = {
         type: 'object'
       };
     }
 
     if (typedefTag.name) {
-      schema.title = typedefTag.name;
+      rootSchema.title = typedefTag.name;
     }
     if (jsdocAST.description) { // `@typedef` does not have its own description
-      schema.description = jsdocAST.description;
+      rootSchema.description = jsdocAST.description;
     }
 
-    const isArray = schema.type === 'array';
-
-    const rootProperties = isArray ? [] : {};
+    const rootProperties = rootSchema.type === 'array' ? [] : {};
     const rootRequired = [];
-    let minItems = 0;
+    const nameMap = new Map();
+
     jsdocAST.tags.forEach(({
       tag, name, description, type, optional, default: dflt}) => {
       if (tag !== 'property') {
         return;
       }
-      const parsedType = type === ''
-        ? {type: '<UNTYPED>'}
-        : typeParser(type);
 
       /**
        * @typedef {PlainObject} Property
@@ -231,13 +225,18 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
        * @property {string} description
        */
       /**
+       * @param {string} nme
+       * @param {string} namePath
        * @param {Node} typeNode
        * @param {object<string,Property>} properties
        * @param {string[]} required
+       * @param {JSONSchema} parentSchema
        * @throws {TypeError}
        * @returns {void}
        */
-      function handleType (typeNode, properties, required) {
+      function handleType (
+        nme, namePath, typeNode, properties, required, parentSchema
+      ) {
         const property = typeNode.type === '<UNTYPED>'
           ? {}
           : getSchemaBase(typeNode, cfg);
@@ -248,37 +247,79 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
         if (dflt) {
           property.default = JSONParse(dflt);
         }
+
+        if (namePath) {
+          nameMap.set(`${namePath}.${nme}`, property);
+        } else {
+          nameMap.set(nme, property);
+        }
+
+        const isArray = parentSchema.type === 'array';
         if (isArray) {
           if (!optional) {
-            minItems++;
+            if (!parentSchema.minItems) {
+              parentSchema.minItems = 0;
+            }
+            parentSchema.minItems++;
           }
           properties.push(property);
         } else {
-          properties[name] = property;
+          properties[nme] = property;
 
-          if (!optional && !required.includes(name)) {
-            required.push(name);
+          if (!optional && !required.includes(nme)) {
+            required.push(nme);
           }
         }
       }
 
-      handleType(parsedType, rootProperties, rootRequired);
-      // console.log('parsedType', parsedType);
-    });
+      const parsedType = type === ''
+        ? {type: '<UNTYPED>'}
+        : typeParser(type);
 
-    if (isArray) {
-      if (minItems) {
-        schema.minItems = minItems;
-      }
-      schema.maxItems = rootProperties.length;
-      schema.items = rootProperties;
-    } else if (Object.keys(rootProperties).length) {
-      schema.properties = rootProperties;
-    }
-    if (rootRequired.length) {
-      schema.required = rootRequired;
-    }
-    return schema;
+      const nameParts = name.split('.');
+
+      nameParts.forEach((nme, i, arr) => {
+        if (i === arr.length - 1) {
+          const namePath = nameParts.slice(0, i).join('.');
+          let schema, properties, required;
+          if (i === 0) {
+            schema = rootSchema;
+            properties = rootProperties;
+            required = rootRequired;
+          } else {
+            schema = nameMap.get(namePath);
+            properties =
+              (schema.type === 'array' ? schema.items : schema.properties) ||
+              (schema.type === 'array' ? [] : {});
+            required = schema.required || [];
+          }
+
+          const isArray = schema.type === 'array';
+
+          handleType(
+            nme, namePath, parsedType, properties, required, schema
+          );
+          if (required.length) {
+            schema.required = required;
+          }
+          if (isArray) {
+            schema.items = properties;
+            schema.maxItems = properties.length;
+          } else { // if (Object.keys(properties).length) {
+            schema.properties = properties;
+          }
+
+          // console.log('schema', schema);
+
+          if (!nameMap.has(namePath)) {
+            nameMap.set(namePath, schema);
+          }
+        }
+      });
+    });
+    // console.log('nameMap', nameMap);
+
+    return rootSchema;
   }).filter((jsonSchema) => {
     return jsonSchema;
   });
