@@ -1,6 +1,6 @@
 # CHANGES for jsdoc-jsonschema
 
-## ?
+## 0.5.0
 
 - Breaking change: Error: "Unsupported jsdoc name <name>" ->
     "Unsupported jsdoc type name <name>"
