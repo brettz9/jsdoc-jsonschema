@@ -461,6 +461,54 @@ describe('`jsdocToJsonSchema`', function () {
       expect(jsdoc).to.equal(parentType);
     }
   );
+
+  it(
+    'converts a simple jsdoc block with `types`',
+    function () {
+      const schemas = jsdocToJsonSchema(parentType, {
+        types: {
+          PlainObject: {
+            format: 'special',
+            type: 'object'
+          }
+        }
+      });
+      // log(schemas[0]);
+      expect(schemas).to.deep.equal([{
+        type: 'object',
+        format: 'special',
+        title: 'ParentType',
+        properties: {
+          numName: {
+            type: 'number'
+          }
+        },
+        required: [
+          'numName'
+        ]
+      }]);
+
+      // Todo: Reenable after https://github.com/n3ps/json-schema-to-jsdoc/issues/40
+      /*
+      const expected = `
+      /**
+       * @typedef {PlainObject} ParentType
+       * @property {number} numName
+       */
+      /* `;
+      const jsdoc = schemaToJSDoc(schemas[0], {
+        formats: {
+          special: {
+            object: 'PlainObject'
+          }
+        }
+      });
+      // log(jsdoc);
+      expect(jsdoc).to.equal(expected);
+      */
+    }
+  );
+
   it('throws with jsdoc type error', function () {
     const docWithTypeError = `
       /**

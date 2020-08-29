@@ -3,6 +3,10 @@
 const commentParser = require('comment-parser');
 const {parse: typeParser} = require('jsdoctypeparser');
 
+const hasOwn = (obj, prop) => {
+  return {}.hasOwnProperty.call(obj, prop);
+};
+
 const jsonSchemaTypes = new Set(
   ['null', 'boolean', 'object', 'array', 'number', 'string', 'integer']
 );
@@ -10,8 +14,7 @@ const booleanLiterals = new Set(['true', 'false']);
 
 const jsonSchemaTypesAndLiterals = new Set([
   ...jsonSchemaTypes,
-  ...booleanLiterals,
-  'PlainObject'
+  ...booleanLiterals
 ]);
 // const jsonSchemaParentTypes = new Set(['object', 'array']);
 
@@ -43,7 +46,13 @@ const recurseCheckType = (
 };
 
 /**
-* @typedef {PlainObject<string,string>} AliasMap
+* @typedef {PlainObject} FormatType
+* @property {string} [format]
+* @property {string} [type]
+*/
+
+/**
+* @typedef {PlainObject<string,FormatType>} TypeConversion
 */
 
 /**
@@ -53,7 +62,7 @@ const recurseCheckType = (
  * @param {boolean} opts.preferInteger
  * @param {boolean} [opts.tolerateCase=true]
  * @param {boolean} [opts.throwOnUnrecognizedName=true]
- * @param {AliasMap} [opts.aliasMap={PlainObject: 'object'}]
+ * @param {TypeConversion} [opts.types={PlainObject: {type: 'object'}}]
  * @throws {TypeError}
  * @returns {JSONSchema}
  */
@@ -61,8 +70,10 @@ function getSchemaBase (typeNode, {
   preferInteger,
   tolerateCase = true,
   throwOnUnrecognizedName = true,
-  aliasMap = {
-    PlainObject: 'object'
+  types = {
+    PlainObject: {
+      type: 'object'
+    }
   }
 } = {}) {
   let schema;
@@ -70,13 +81,18 @@ function getSchemaBase (typeNode, {
   switch (typeNode.type) {
   case 'NAME': {
     let {name: typeName} = typeNode;
-    if ({}.hasOwnProperty.call(aliasMap, typeName)) {
-      typeName = aliasMap[typeName];
+    const typeObject = hasOwn(types, typeName) && types[typeName];
+    const hasCustomType = typeObject && typeObject.type;
+    if (hasCustomType) {
+      typeName = types[typeName].type;
     }
     if (tolerateCase) {
       typeName = typeName.toLowerCase();
     }
-    if (throwOnUnrecognizedName && !jsonSchemaTypesAndLiterals.has(typeName)) {
+    if (
+      throwOnUnrecognizedName && !hasCustomType &&
+      !jsonSchemaTypesAndLiterals.has(typeName)
+    ) {
       throw new TypeError(`Unsupported jsdoc type name ${typeName}`);
     }
     // Todo: This should be added to a dynamic `properties`,
@@ -84,6 +100,10 @@ function getSchemaBase (typeNode, {
     schema = {
       type: booleanLiterals.has(typeName) ? 'boolean' : typeName
     };
+
+    if (typeObject && hasOwn(typeObject, 'format')) {
+      schema.format = typeObject.format;
+    }
 
     if (booleanLiterals.has(typeName)) {
       // While we could add `null` to be set as single `enum`

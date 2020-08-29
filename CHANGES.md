@@ -1,5 +1,11 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.6.0
+
+- Breaking change: Change undocumented `aliasMap` to `types` and expect object
+    with optional `type` or `format`
+- Fix: If present as a replacement in `types`, ensure won't err
+
 ## 0.5.0
 
 - Breaking change: Error: "Unsupported jsdoc name <name>" ->

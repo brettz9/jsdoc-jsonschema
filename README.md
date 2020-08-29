@@ -112,9 +112,6 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 ## To-dos
 
 1. Get working with **nested objects and arrays** (nested with `.`)
-1. Allow **format map** so type can be added with `format` (e.g., "HTML" ->
-    `type: string, format: 'html'`); also support in `json-schema-to-jsdoc`
-    ([#40](https://github.com/n3ps/json-schema-to-jsdoc/issues/40))
 1. Allow reference to other `@typedef` types (**`definitions`**?) Probably
     need to also add support in `json-schema-to-jsdoc`
     ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41)
