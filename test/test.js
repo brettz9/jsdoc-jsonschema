@@ -601,7 +601,8 @@ describe('`jsdocToJsonSchema`', function () {
     }]);
 
     // Todo: Support making properties optional (and with defaults) by
-    //   `minItems` in json-schema-to-jsdoc
+    //   `minItems` in json-schema-to-jsdoc:
+    //   https://github.com/n3ps/json-schema-to-jsdoc/pull/46
     /*
     const jsdoc = schemaToJSDoc(schemas[0], 4, null, {
       array: 'GenericArray'
