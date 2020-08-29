@@ -12,12 +12,13 @@ const chai = require('chai');
 const jsonSchemaToJSDoc = require('json-schema-to-jsdoc');
 const {jsdocToJsonSchema} = require('../');
 
-const schemaToJSDoc = (expectedSchema, indent = 0, opts = {}) => {
+const schemaToJSDoc = (expectedSchema, indent = 0, opts = {}, types = {}) => {
   return '\n' + jsonSchemaToJSDoc(expectedSchema, {
     ...opts,
     indent,
     types: {
-      object: 'PlainObject'
+      object: 'PlainObject',
+      ...types
     }
   });
 };
@@ -508,6 +509,57 @@ describe('`jsdocToJsonSchema`', function () {
       */
     }
   );
+
+  it('converts a simple array jsdoc block', function () {
+    const arrayTypedef = `
+    /**
+     * @typedef {GenericArray} SomeType
+     * @property {number} 0
+     * @property {integer} 1
+     * @property {string} [2]
+     * @property {boolean} [3=false]
+     */
+`;
+    const schemas = jsdocToJsonSchema(arrayTypedef, {
+      types: {
+        GenericArray: {
+          type: 'array'
+        }
+      }
+    });
+    // log(schemas[0]);
+    expect(schemas).to.deep.equal([{
+      type: 'array',
+      minItems: 2,
+      maxItems: 4,
+      items: [
+        {
+          type: 'number'
+        },
+        {
+          type: 'integer'
+        },
+        {
+          type: 'string'
+        },
+        {
+          type: 'boolean',
+          default: false
+        }
+      ],
+      title: 'SomeType'
+    }]);
+
+    // Todo: Support making properties optional (and with defaults) by
+    //   `minItems` in json-schema-to-jsdoc
+    /*
+    const jsdoc = schemaToJSDoc(schemas[0], 4, null, {
+      array: 'GenericArray'
+    });
+    // log(jsdoc);
+    expect(jsdoc).to.equal(arrayTypedef);
+    */
+  });
 
   it('throws with jsdoc type error', function () {
     const docWithTypeError = `

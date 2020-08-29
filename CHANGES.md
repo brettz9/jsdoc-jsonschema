@@ -1,5 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.7.0
+
+- Enhancement: Allow arrays/items
+
 ## 0.6.0
 
 - Breaking change: Change undocumented `aliasMap` to `types` and expect object

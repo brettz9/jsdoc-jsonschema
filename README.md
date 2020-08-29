@@ -111,7 +111,6 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## To-dos
 
-1. Get working with **arrays/items**
 1. Get working with **nested objects and arrays** (nested with `.`)
 1. Allow reference to other `@typedef` types (**`definitions`**?) Probably
     need to also add support in `json-schema-to-jsdoc`

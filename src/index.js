@@ -184,8 +184,38 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
       return null;
     }
 
-    const rootProperties = {};
+    let parsedTypedef = {};
+    try {
+      parsedTypedef = typeParser(typedefTag.type);
+    } catch (err) {
+      // Ignore
+    }
+
+    let schema;
+    if (parsedTypedef.type) {
+      schema = getSchemaBase(parsedTypedef, {
+        ...cfg,
+        throwOnUnrecognizedName: false
+      });
+    }
+    if (!schema) {
+      schema = {
+        type: 'object'
+      };
+    }
+
+    if (typedefTag.name) {
+      schema.title = typedefTag.name;
+    }
+    if (jsdocAST.description) { // `@typedef` does not have its own description
+      schema.description = jsdocAST.description;
+    }
+
+    const isArray = schema.type === 'array';
+
+    const rootProperties = isArray ? [] : {};
     const rootRequired = [];
+    let minItems = 0;
     jsdocAST.tags.forEach(({
       tag, name, description, type, optional, default: dflt}) => {
       if (tag !== 'property') {
@@ -218,43 +248,31 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
         if (dflt) {
           property.default = JSONParse(dflt);
         }
-        properties[name] = property;
+        if (isArray) {
+          if (!optional) {
+            minItems++;
+          }
+          properties.push(property);
+        } else {
+          properties[name] = property;
 
-        if (!optional && !required.includes(name)) {
-          required.push(name);
+          if (!optional && !required.includes(name)) {
+            required.push(name);
+          }
         }
       }
 
       handleType(parsedType, rootProperties, rootRequired);
       // console.log('parsedType', parsedType);
     });
-    let parsedTypedef = {};
-    try {
-      parsedTypedef = typeParser(typedefTag.type);
-    } catch (err) {
-      // Ignore
-    }
 
-    let schema;
-    if (parsedTypedef.type) {
-      schema = getSchemaBase(parsedTypedef, {
-        ...cfg,
-        throwOnUnrecognizedName: false
-      });
-    }
-    if (!schema) {
-      schema = {
-        type: 'object'
-      };
-    }
-
-    if (typedefTag.name) {
-      schema.title = typedefTag.name;
-    }
-    if (jsdocAST.description) { // `@typedef` does not have its own description
-      schema.description = jsdocAST.description;
-    }
-    if (Object.keys(rootProperties).length) {
+    if (isArray) {
+      if (minItems) {
+        schema.minItems = minItems;
+        schema.maxItems = rootProperties.length;
+      }
+      schema.items = rootProperties;
+    } else if (Object.keys(rootProperties).length) {
       schema.properties = rootProperties;
     }
     if (rootRequired.length) {
