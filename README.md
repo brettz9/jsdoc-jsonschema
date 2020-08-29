@@ -118,10 +118,10 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## Lower-priority to-dos
 
-1. Get working with mixed **union types** (and for TS, **intersection types**)
+1. Get working with **mixed union types** (and for TS, **intersection types**)
+1. Add **mixed literals as `enum`** with `type` array
 1. **Nested types**, e.g., nullable
 1. Use `title` with `@property` despite being redundant with `properties` key?
-1. Add mixed literals as **`enum`** with `type` array
 1. Convert TS negated type to **`not`**?
 1. Option to **read from file**, optionally filtering out only the `@typedef`'s
     of interest (by whitelist and/or blacklist)
