@@ -269,8 +269,8 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
     if (isArray) {
       if (minItems) {
         schema.minItems = minItems;
-        schema.maxItems = rootProperties.length;
       }
+      schema.maxItems = rootProperties.length;
       schema.items = rootProperties;
     } else if (Object.keys(rootProperties).length) {
       schema.properties = rootProperties;
