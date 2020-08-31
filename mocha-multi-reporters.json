@@ -1,0 +1,7 @@
+{
+  "mochaBadgeGeneratorReporterOptions": {
+    "badge_template": "${passes}/${total} (${duration}ms total duration; ${speeds.slow} tests > 75ms)",
+    "badge_output": "badges/tests-badge.svg"
+  },
+  "reporterEnabled": "mocha-badge-generator, spec"
+}

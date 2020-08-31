@@ -4,15 +4,21 @@
   "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
   "main": "src/index.js",
   "scripts": {
+    "license-badge": "license-badger --corrections --uncategorizedLicenseTemplate \"\\${license} (\\${name} (\\${version}))\" --filteredTypes=nonempty --textTemplate \"License types\n(project, deps, and bundled devDeps)\" --packageJson --production badges/licenses-badge.svg",
+    "license-badge-dev": "license-badger --corrections --filteredTypes=nonempty --textTemplate \"License types\n(all devDeps)\" --allDevelopment badges/licenses-badge-dev.svg",
+    "license-badges": "npm run license-badge && npm run license-badge-dev",
+    "prepublishOnly": "npm run license-badges",
+    "coverage-badge": "coveradge badges/coverage-badge.svg",
     "eslint": "eslint --ext=js,md,html .",
-    "mocha": "mocha --require chai/register-expect --inline-diffs",
-    "nyc": "nyc --cache=false npm run mocha",
+    "mocha": "mocha",
+    "nyc": "nyc --cache=false npm run mocha && npm run coverage-badge",
     "test": "npm run eslint && npm run nyc"
   },
   "nyc": {
     "reporter": [
       "lcov",
-      "text"
+      "text",
+      "json-summary"
     ]
   },
   "repository": {
@@ -40,6 +46,8 @@
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^13.0.0",
     "chai": "^4.2.0",
+    "coveradge": "^0.6.0",
+    "cypress-multi-reporters": "^1.4.0",
     "eslint": "^7.7.0",
     "eslint-config-ash-nazg": "^22.7.0",
     "eslint-config-standard": "^14.1.1",
@@ -58,7 +66,9 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-unicorn": "^21.0.0",
     "json-schema-to-jsdoc": "https://github.com/n3ps/json-schema-to-jsdoc#master",
+    "license-badger": "^0.18.0",
     "mocha": "^8.1.3",
+    "mocha-badge-generator": "^0.8.0",
     "nyc": "^15.1.0",
     "typescript": "^4.0.2"
   }

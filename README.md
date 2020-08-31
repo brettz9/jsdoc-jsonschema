@@ -1,3 +1,26 @@
+[![npm](https://img.shields.io/npm/v/jsdoc-jsonschema.svg)](https://www.npmjs.com/package/jsdoc-jsonschema)
+[![Dependencies](https://img.shields.io/david/brettz9/jsdoc-jsonschema.svg)](https://david-dm.org/brettz9/jsdoc-jsonschema)
+[![devDependencies](https://img.shields.io/david/dev/brettz9/jsdoc-jsonschema.svg)](https://david-dm.org/brettz9/jsdoc-jsonschema?type=dev)
+
+<!--[![Actions Status](https://github.com/brettz9/jsdoc-jsonschema/workflows/Node%20CI/badge.svg)](https://github.com/brettz9/jsdoc-jsonschema/actions)-->
+[![Build Status](https://travis-ci.org/n3ps/json-schema-to-jsdoc.svg?branch=master)](https://travis-ci.org/n3ps/json-schema-to-jsdoc)
+[![testing badge](https://raw.githubusercontent.com/brettz9/jsdoc-jsonschema/master/badges/tests-badge.svg?sanitize=true)](badges/tests-badge.svg)
+[![coverage badge](https://raw.githubusercontent.com/brettz9/jsdoc-jsonschema/master/badges/coverage-badge.svg?sanitize=true)](badges/coverage-badge.svg)
+<!--
+[![Actions Status](https://github.com/brettz9/jsdoc-jsonschema/workflows/Coverage/badge.svg)](https://github.com/brettz9/jsdoc-jsonschema/actions)
+-->
+
+[![Known Vulnerabilities](https://snyk.io/test/github/brettz9/jsdoc-jsonschema/badge.svg)](https://snyk.io/test/github/brettz9/jsdoc-jsonschema)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/brettz9/jsdoc-jsonschema.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brettz9/jsdoc-jsonschema/alerts)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/brettz9/jsdoc-jsonschema.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brettz9/jsdoc-jsonschema/context:javascript)
+
+<!--[![License](https://img.shields.io/npm/l/jsdoc-jsonschema.svg)](LICENSE-MIT.txt)-->
+[![Licenses badge](https://raw.githubusercontent.com/brettz9/jsdoc-jsonschema/master/badges/licenses-badge.svg?sanitize=true)](badges/licenses-badge.svg)
+
+(see also [licenses for dev. deps.](https://raw.githubusercontent.com/brettz9/jsdoc-jsonschema/master/badges/licenses-badge-dev.svg?sanitize=true))
+
+[![issuehunt-to-marktext](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/brettz9/jsdoc-jsonschema)
+
 # jsdoc-jsonschema
 
 Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with
