@@ -1,5 +1,10 @@
 # CHANGES for jsdoc-jsonschema
 
+## ?
+
+- Docs: Add badges (license, mocha, coverage; npm, build, lgtm, snyk)
+- Ci: Add `travis.yml`
+
 ## 0.8.0
 
 - Enhancement: Support nested objects and arrays (nested with `.`)
