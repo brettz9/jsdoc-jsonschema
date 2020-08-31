@@ -83,6 +83,14 @@ properties:
 - `tolerateCase` - Boolean (default `true`) on whether to allow types defined
     in different casing, e.g., `Object`, to avoid throwing and be converted to
     their lower-case counterpart understood by JSON Schema.
+- `throwOnUnrecognizedName` - Boolean (default `true`) on whether to throw
+    upon encountering a type that is not a JSON-schema type (unless a custom
+    type is supplied).
+- `types` - Object (defaults to `{PlainObject: {type: 'object'}}`) whose keys
+    are custom type names and whose values are objects with `type` and/or
+    `format`. If one of the custom types is found in a jsdoc type, its
+    conversion to JSON Schema will result in the object's `type` and/or
+    `format`.
 
 ## Scope
 
