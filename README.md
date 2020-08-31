@@ -3,9 +3,6 @@
 Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with
 support for nonstandard expansions).
 
-**This project is not yet complete; it currently only works with
-single simple types!**
-
 ## Use cases
 
 - Validating the arguments passed to one's code at run-time
