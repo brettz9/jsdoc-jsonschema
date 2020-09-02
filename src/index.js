@@ -7,6 +7,13 @@ const hasOwn = (obj, prop) => {
   return {}.hasOwnProperty.call(obj, prop);
 };
 
+const isA = (typ) => {
+  return {
+    classRelation: 'is-a',
+    $ref: `$defs/${typ}`
+  };
+};
+
 const jsonSchemaTypes = new Set(
   ['null', 'boolean', 'object', 'array', 'number', 'string', 'integer']
 );
@@ -17,6 +24,8 @@ const jsonSchemaTypesAndLiterals = new Set([
   ...booleanLiterals
 ]);
 // const jsonSchemaParentTypes = new Set(['object', 'array']);
+
+const compoundTypes = new Set(['UNION', 'INTERSECTION']);
 
 /**
  *
@@ -32,7 +41,18 @@ const JSONParse = JSON.parse.bind(JSON);
 const recurseCheckType = (
   node, nodeType, property, converter, collector
 ) => {
-  if (node.type === 'UNION' && node.left.type === nodeType) {
+  if (node.type === 'PARENTHESIS') {
+    const nestedCollector = [];
+    recurseCheckType(
+      node.value, nodeType, property, converter, nestedCollector
+    );
+    const prop = node.value.type === 'UNION' ? 'anyOf' : 'allOf';
+    collector.push({
+      [prop]: nestedCollector
+    });
+    return collector;
+  }
+  if (compoundTypes.has(node.type) && node.left.type === nodeType) {
     collector.push(converter(node.left[property]));
     return recurseCheckType(
       node.right, nodeType, property, converter, collector
@@ -56,26 +76,29 @@ const recurseCheckType = (
 */
 
 /**
+* @typedef {PlainObject} Config
+* @property {boolean} [preferInteger=false]
+* @property {boolean} [tolerateCase=true]
+* @property {boolean} [throwOnUnrecognizedName=true]
+* @property {boolean} [$defs=false]
+* @property {TypeConversion} [types={PlainObject: {type: 'object'}}]
+*/
+
+/**
  *
+ * @param {string} type
  * @param {JSDocTypeParserNode} typeNode
- * @param {PlainObject} [opts={}]
- * @param {boolean} opts.preferInteger
- * @param {boolean} [opts.tolerateCase=true]
- * @param {boolean} [opts.throwOnUnrecognizedName=true]
- * @param {TypeConversion} [opts.types={PlainObject: {type: 'object'}}]
+ * @param {Config} [cfg]
  * @throws {TypeError}
  * @returns {JSONSchema}
  */
-function getSchemaBase (typeNode, {
+function getSchemaBase (type, typeNode, {
   preferInteger,
-  tolerateCase = true,
-  throwOnUnrecognizedName = true,
-  types = {
-    PlainObject: {
-      type: 'object'
-    }
-  }
-} = {}) {
+  tolerateCase,
+  throwOnUnrecognizedName,
+  $defs,
+  types
+}) {
   let schema;
   // console.log('typeNode', typeNode);
   switch (typeNode.type) {
@@ -90,7 +113,7 @@ function getSchemaBase (typeNode, {
       typeName = typeName.toLowerCase();
     }
     if (
-      throwOnUnrecognizedName && !hasCustomType &&
+      throwOnUnrecognizedName && !$defs && !hasCustomType &&
       !jsonSchemaTypesAndLiterals.has(typeName)
     ) {
       throw new TypeError(`Unsupported jsdoc type name ${typeName}`);
@@ -145,20 +168,46 @@ function getSchemaBase (typeNode, {
       enumArr = recurseCheckType(
         typeNode, 'NUMBER_VALUE', 'number', Number, []
       );
-      schema.type = preferInteger && enumArr.every((num) => {
-        return Number.isInteger(num);
-      })
-        ? 'integer'
-        : 'number';
+      if (enumArr) {
+        schema.type = preferInteger && enumArr.every((num) => {
+          return Number.isInteger(num);
+        })
+          ? 'integer'
+          : 'number';
+      } else {
+        const anyOf = recurseCheckType(
+          typeNode, 'NAME', 'name', isA, []
+        );
+        if (!anyOf) {
+          throw new TypeError(
+            'There is currently no support for mixed-type or ' +
+              'non-string/number enums'
+          );
+        }
+
+        return {
+          type: 'object',
+          anyOf
+        };
+      }
     }
-    if (!enumArr) {
+
+    schema.enum = enumArr;
+    break;
+  } case 'INTERSECTION': {
+    const allOf = recurseCheckType(
+      typeNode, 'NAME', 'name', isA, []
+    );
+    if (!allOf) {
       throw new TypeError(
         'There is currently no support for mixed-type or ' +
           'non-string/number enums'
       );
     }
-
-    schema.enum = enumArr;
+    schema = {
+      type: 'object',
+      allOf
+    };
     break;
   } default:
     throw new TypeError(`Unsupported jsdoc type ${typeNode.type}`);
@@ -169,12 +218,27 @@ function getSchemaBase (typeNode, {
 
 /**
  * @param {string} jsdocStr
- * @param {PlainObject} cfg
+ * @param {Config} cfg
  * @returns {JSON}
  */
-const jsdocToJsonSchema = (jsdocStr, cfg) => {
+const jsdocToJsonSchema = (
+  jsdocStr,
+  cfg = {}
+) => {
+  const {
+    preferInteger = false,
+    tolerateCase = true,
+    throwOnUnrecognizedName = true,
+    $defs = false,
+    types = {
+      PlainObject: {
+        type: 'object'
+      }
+    }
+  } = cfg;
   const parsed = commentParser(jsdocStr);
-  return parsed.map((jsdocAST) => {
+
+  const results = parsed.map((jsdocAST) => {
     const typedefTag = jsdocAST.tags.find(({tag}) => {
       return tag === 'typedef';
     });
@@ -182,17 +246,21 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
       return null;
     }
 
+    const {type: typ} = typedefTag;
     let parsedTypedef = {};
     try {
-      parsedTypedef = typeParser(typedefTag.type);
+      parsedTypedef = typeParser(typ);
     } catch (err) {
       // Ignore
     }
 
     let rootSchema;
     if (parsedTypedef.type) {
-      rootSchema = getSchemaBase(parsedTypedef, {
-        ...cfg,
+      rootSchema = getSchemaBase(typ, parsedTypedef, {
+        preferInteger,
+        tolerateCase,
+        $defs,
+        types,
         throwOnUnrecognizedName: false
       });
     }
@@ -239,7 +307,13 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
       ) {
         const property = typeNode.type === '<UNTYPED>'
           ? {}
-          : getSchemaBase(typeNode, cfg);
+          : getSchemaBase(type, typeNode, {
+            preferInteger,
+            tolerateCase,
+            throwOnUnrecognizedName,
+            $defs,
+            types
+          });
 
         if (description) {
           property.description = description;
@@ -323,6 +397,81 @@ const jsdocToJsonSchema = (jsdocStr, cfg) => {
   }).filter((jsonSchema) => {
     return jsonSchema;
   });
+
+  if ($defs) {
+    const resultsCopy = JSON.parse(JSON.stringify(results));
+    const ret = resultsCopy.reduce((obj, result, i) => {
+      if (!hasOwn(result, 'title')) {
+        throw new Error(
+          'It is currently necessary to have a `title` on all schema ' +
+          'items in order to use the `$defs` option.'
+        );
+      }
+
+      if (!jsonSchemaTypesAndLiterals.has(result.type)) {
+        const referent = results.find(({title}, j) => {
+          return i !== j && result.type === (tolerateCase
+            ? title.toLowerCase()
+            : title);
+        });
+        if (referent) {
+          // Todo: Could be an array
+          result.type = 'object'; // referent.type;
+          result.allOf = [
+            {
+              classRelation: 'is-a',
+              $ref: `$defs/${referent.title}`
+            }
+          ];
+        } else if (throwOnUnrecognizedName) {
+          throw new TypeError(`Unsupported jsdoc type name ${result.type}`);
+        } else {
+          result.type = 'object';
+        }
+      }
+      obj.$defs[result.title] = result;
+      return obj;
+    }, {$defs: {}});
+
+    const defs = Object.values(ret.$defs);
+
+    const rootType = [...results].reverse().find((result) => {
+      if (result.allOf) {
+        return !defs.find(({allOf}) => {
+          return allOf && allOf.find(({$ref}) => {
+            return $ref === `$defs/${result.title}`;
+          });
+        });
+      }
+      if (result.anyOf) {
+        return !defs.find(({anyOf}) => {
+          return anyOf && anyOf.find(({$ref}) => {
+            return $ref === `$defs/${result.title}`;
+          });
+        });
+      }
+      return !jsonSchemaTypesAndLiterals.has(result.type) &&
+        !defs.find(({allOf}) => {
+          return allOf && allOf.find(({$ref}) => {
+            return $ref === `$defs/${result.title}`;
+          });
+        });
+    });
+    if (!rootType) {
+      throw new Error(
+        'Missing root type; must have non-plain type not-referenced by others'
+      );
+    }
+    ret.allOf = [
+      {
+        classRelation: 'is-a',
+        $ref: `$defs/${rootType.title}`
+      }
+    ];
+    return ret;
+  }
+
+  return results;
 };
 
 exports.jsdocToJsonSchema = jsdocToJsonSchema;

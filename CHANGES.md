@@ -1,7 +1,8 @@
 # CHANGES for jsdoc-jsonschema
 
-## ?
+## 0.9.0
 
+- Enhancement: Support `allOf` and `anyOf` with `classRelation: 'is-a'`
 - Docs: Add badges (license, mocha, coverage; npm, build, lgtm, snyk)
 - Ci: Add `travis.yml`
 

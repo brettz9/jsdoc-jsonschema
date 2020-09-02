@@ -47,6 +47,7 @@ from having to build both.
 | `@property {integer} propName` | `{properties: {propName: {type: 'integer'}}, required: ['propName']}`
 | `@property {3\|4\|5} propName` | `{properties: {propName: {type: 'number', enum: [3, 4, 5]}}, required: ['propName']}` | Can force to `integer` type
 | `@typedef {3\|4\|5}` | `{type: 'number', enum: [3, 4, 5]}` | Can force to `integer` type
+| `@typedef {SomeType & (AnotherType \| YetAnotherType)}` | `{allOf: [{classRelation: 'is-a', $ref: '$defs/SomeType'}, {anyOf: [{classRelation: 'is-a', $ref: '$defs/AnotherType'}, {classRelation: 'is-a', $ref: '$defs/YetAnotherType'}]}]}` | Inner parenthesized unions and/or intersections
 | `@property {integer} [propName] Prop desc.` | `{properties: {propName: {type: 'integer', description: 'Prop desc.'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
 
 ## FAQ
@@ -139,9 +140,10 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## To-dos
 
-1. Allow reference to other `@typedef` types (**`definitions`**?) Probably
-    need to also add support in `json-schema-to-jsdoc`
+1. Add support in `json-schema-to-jsdoc`
     ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41)
+    for `@typedef`'s referencing other `@typedef`'s to complete commented
+    out sanity checks in tests
 
 ## Lower-priority to-dos
 
