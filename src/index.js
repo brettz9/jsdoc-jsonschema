@@ -226,10 +226,10 @@ const jsdocToJsonSchema = (
   cfg = {}
 ) => {
   const {
+    $defs = false,
     preferInteger = false,
     tolerateCase = true,
     throwOnUnrecognizedName = true,
-    $defs = false,
     types = {
       PlainObject: {
         type: 'object'

@@ -104,6 +104,11 @@ jsdocToJsonSchema(`
 As a second argument, one can supply an options object with the following
 properties:
 
+- `$defs` - Boolean (default `false`) on whether to produce a schema with
+    `$defs`. Expected when seeking to build `is-a` structures (with a single
+    root).
+- `preferInteger` - Boolean (default `false`) on whether to prefer `integer`
+    as a schema `type` when the number has no decimal value.
 - `tolerateCase` - Boolean (default `true`) on whether to allow types defined
     in different casing, e.g., `Object`, to avoid throwing and be converted to
     their lower-case counterpart understood by JSON Schema.
