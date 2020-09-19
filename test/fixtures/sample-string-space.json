@@ -1,0 +1,9 @@
+[
+	{
+		"type": "number",
+		"enum": [
+			123
+		],
+		"title": "NumberType"
+	}
+]

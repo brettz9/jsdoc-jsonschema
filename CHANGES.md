@@ -1,5 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.10.0
+
+- Enhancement: Add binary
+
 ## 0.9.0
 
 - Enhancement: Support `allOf` and `anyOf` with `classRelation: 'is-a'`

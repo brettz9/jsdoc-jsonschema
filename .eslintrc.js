@@ -12,7 +12,8 @@ module.exports = {
   settings: {
     polyfills: [
       'Number.isInteger',
-      'Number.parseFloat'
+      'Number.parseFloat',
+      'Promise.all'
     ]
   },
   globals: {
@@ -20,7 +21,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly'
   },
   overrides: [{
-    files: ['test/**'],
+    files: ['test/**', 'bin/**'],
     extends: [
       'ash-nazg/sauron-node',
       'plugin:node/recommended-script'
@@ -32,11 +33,15 @@ module.exports = {
       expect: true
     },
     rules: {
+      // Reenabled by recommended-script
+      'no-process-exit': 0,
+
+      'no-console': 0,
+      'node/exports-style': 0,
+
       // Browser only
       'compat/compat': 0,
-      'import/no-commonjs': 0,
-      'no-console': 0,
-      'node/exports-style': 0
+      'import/no-commonjs': 0
     }
   }, {
     files: ['*.md'],

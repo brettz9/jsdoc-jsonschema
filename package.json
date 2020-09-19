@@ -3,11 +3,16 @@
   "version": "0.9.0",
   "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
   "main": "src/index.js",
+  "bin": {
+    "jsdoc-jsonschema": "./bin/cli.js"
+  },
   "scripts": {
     "license-badge": "license-badger --corrections --uncategorizedLicenseTemplate \"\\${license} (\\${name} (\\${version}))\" --filteredTypes=nonempty --textTemplate \"License types\n(project, deps, and bundled devDeps)\" --packageJson --production badges/licenses-badge.svg",
     "license-badge-dev": "license-badger --corrections --filteredTypes=nonempty --textTemplate \"License types\n(all devDeps)\" --allDevelopment badges/licenses-badge-dev.svg",
     "license-badges": "npm run license-badge && npm run license-badge-dev",
     "prepublishOnly": "npm run license-badges",
+    "build-cli-svg": "clp --format=svg --config=src/optionDefinitions.js badges/cli.svg",
+    "build-cli": "npm run build-cli-svg",
     "coverage-badge": "coveradge badges/coverage-badge.svg",
     "eslint": "eslint --ext=js,md,html .",
     "mocha": "mocha",
@@ -40,12 +45,14 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
+    "command-line-basics": "^0.8.0",
     "comment-parser": "^0.7.6",
     "jsdoctypeparser": "^9.0.0"
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^13.0.0",
     "chai": "^4.2.0",
+    "command-line-publish": "^0.7.0",
     "coveradge": "^0.6.0",
     "cypress-multi-reporters": "^1.4.0",
     "eslint": "^7.7.0",

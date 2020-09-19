@@ -1,7 +1,13 @@
 'use strict';
 
+const {readFile: origReadFile, writeFile: origWriteFile} = require('fs');
+const {promisify} = require('util');
+const {resolve} = require('path');
 const commentParser = require('comment-parser');
 const {parse: typeParser} = require('jsdoctypeparser');
+
+const readFile = promisify(origReadFile);
+const writeFile = promisify(origWriteFile);
 
 const hasOwn = (obj, prop) => {
   return {}.hasOwnProperty.call(obj, prop);
@@ -76,19 +82,25 @@ const recurseCheckType = (
 */
 
 /**
-* @typedef {PlainObject} Config
-* @property {boolean} [preferInteger=false]
-* @property {boolean} [tolerateCase=true]
-* @property {boolean} [throwOnUnrecognizedName=true]
-* @property {boolean} [$defs=false]
-* @property {TypeConversion} [types={PlainObject: {type: 'object'}}]
-*/
+ * @typedef {PlainObject} JsdocJsonSchemaOptions
+ * @property {boolean} [preferInteger=false]
+ * @property {boolean} [tolerateCase=true]
+ * @property {boolean} [throwOnUnrecognizedName=true]
+ * @property {boolean} [$defs=false]
+ * @property {TypeConversion} [types={PlainObject: {type: 'object'}}]
+ */
+
+/**
+ * @typedef {JsdocJsonSchemaOptions} JsdocFileJsonSchemaOptions
+ * @property {string[]} file
+ * @property {string|number} [space=2]
+ */
 
 /**
  *
  * @param {string} type
  * @param {JSDocTypeParserNode} typeNode
- * @param {Config} [cfg]
+ * @param {JsdocJsonSchemaOptions} [cfg]
  * @throws {TypeError}
  * @returns {JSONSchema}
  */
@@ -217,8 +229,39 @@ function getSchemaBase (type, typeNode, {
 }
 
 /**
+ * @param {JsdocFileJsonSchemaOptions} cfg
+ * @returns {Promise<void>}
+ */
+const jsdocFileToJsonSchema = async (cfg) => {
+  // Todo: Could really make this config feature, and file retrieval method as
+  //   a whole as utilities of `command-line-basics`
+  const opts = cfg.configPath
+    // eslint-disable-next-line import/no-dynamic-require -- User path
+    ? {...require(resolve(process.cwd(), cfg.configPath)), ...cfg}
+    : cfg;
+  if (!opts.file) {
+    throw new Error(
+      'The `file` argument is required (or use `--help` or `--version`).'
+    );
+  }
+  const jsdocStrs = await Promise.all(opts.file.map((f) => {
+    return readFile(f, 'utf8');
+  }));
+  await Promise.all(jsdocStrs.map((jsdocStr, i) => {
+    const f = (opts.outputPath && opts.outputPath[i]) ||
+      opts.file[i].replace(/\.js$/u, '.json');
+    const jsonSchema = jsdocToJsonSchema(jsdocStr, opts);
+    return writeFile(
+      f,
+      JSON.stringify(jsonSchema, null, hasOwn(opts, 'space') ? opts.space : 2) +
+      '\n'
+    );
+  }));
+};
+
+/**
  * @param {string} jsdocStr
- * @param {Config} cfg
+ * @param {JsdocJsonSchemaOptions} cfg
  * @returns {JSON}
  */
 const jsdocToJsonSchema = (
@@ -474,4 +517,5 @@ const jsdocToJsonSchema = (
   return results;
 };
 
+exports.jsdocFileToJsonSchema = jsdocFileToJsonSchema;
 exports.jsdocToJsonSchema = jsdocToJsonSchema;

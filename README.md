@@ -121,6 +121,10 @@ properties:
     conversion to JSON Schema will result in the object's `type` and/or
     `format`.
 
+## CLI
+
+![badges/cli.svg](./badges/cli.svg)
+
 ## Scope
 
 This project does not aim to convert other similar sources such as TypeScript
@@ -152,6 +156,7 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## Lower-priority to-dos
 
+1. Support **file globs** and output directory
 1. Get working with **mixed union types** (and for TS, **intersection types**)
 1. Add **mixed literals as `enum`** with `type` array
 1. **Nested types**, e.g., nullable
