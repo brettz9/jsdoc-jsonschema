@@ -5,7 +5,9 @@ const pkg = require('../package.json');
 // Todo: We really ought to dogfood this based on `src/index.js`, and
 //  even have a library to auto-convert JSON Schema into the structure below,
 //  with jsdoc (and the converted JSON Schema) enhanced to add CLI properties,
-//  e.g., any alias and possibly its `typeLabel`.
+//  e.g., any alias (`@cli-alias {file} f`) and possibly its `typeLabel`.
+//  Probably also need to add whitelist option so only get desired typedef
+//  and its parents out of a file.
 //  Might also see about https://github.com/dsheiko/bycontract/
 /* eslint-disable jsdoc/require-property -- Should build schema */
 /**
