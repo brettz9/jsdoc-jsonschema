@@ -154,7 +154,7 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 1. Add support in `json-schema-to-jsdoc`
     ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41)
     for `@typedef`'s referencing other `@typedef`'s to complete commented
-    out sanity checks in tests
+    out sanity checks in tests; resume using stable version once may be merged
 
 ## Lower-priority to-dos
 
