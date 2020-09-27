@@ -67,7 +67,7 @@ const parentType = `
 const nestedType = `
 /**
  * @typedef {PlainObject} NestedType
- * @property {object} cfg
+ * @property {PlainObject} cfg
  * @property {string} cfg.requiredProp
  * @property {number} [cfg.optionalProp]
  */
@@ -75,7 +75,7 @@ const nestedType = `
 
 const nestedArrayType = `
 /**
- * @typedef {array} NestedType
+ * @typedef {array} NestedArrayType
  * @property {array} 0
  * @property {string} 0.0
  * @property {number} 0.1
@@ -251,11 +251,9 @@ describe('`jsdocToJsonSchema`', function () {
       };
       expect(schemas).to.deep.equal([expectedSchema]);
 
-      // Todo: Reenable after
-      //   https://github.com/n3ps/json-schema-to-jsdoc/pull/45
-      // const jsdoc = schemaToJSDoc(expectedSchema);
+      const jsdoc = schemaToJSDoc(expectedSchema);
       // log(jsdoc);
-      // expect(jsdoc).to.equal(integerType);
+      expect(jsdoc).to.equal(integerType);
     });
     it('converts a string type jsdoc block', function () {
       const schemas = jsdocToJsonSchema(stringType);
@@ -421,11 +419,9 @@ describe('`jsdocToJsonSchema`', function () {
     };
     expect(schemas).to.deep.equal([expectedSchema]);
 
-    // Todo: Reenable after
-    //   https://github.com/n3ps/json-schema-to-jsdoc/pull/45
-    // const jsdoc = schemaToJSDoc(expectedSchema, 4);
+    const jsdoc = schemaToJSDoc(expectedSchema, 4);
     // log(jsdoc);
-    // expect(jsdoc).to.equal(literalType);
+    expect(jsdoc).to.equal(literalType);
   });
 
   it('converts a simple jsdoc block with descriptions', function () {
@@ -578,11 +574,9 @@ describe('`jsdocToJsonSchema`', function () {
       ]
     }]);
 
-    // Todo: Reenable after
-    //   https://github.com/n3ps/json-schema-to-jsdoc/pull/45
-    // const jsdoc = schemaToJSDoc(schemas[0], 4);
+    const jsdoc = schemaToJSDoc(schemas[0], 4);
     // log(jsdoc);
-    // expect(jsdoc).to.equal(noNameTypedef);
+    expect(jsdoc).to.equal(noNameTypedef);
   });
   it('converts a simple jsdoc block without properties', function () {
     const noNameTypedef = `
@@ -656,15 +650,12 @@ describe('`jsdocToJsonSchema`', function () {
         ]
       }]);
 
-      // Todo: Reenable after
-      //   https://github.com/n3ps/json-schema-to-jsdoc/issues/40
-      /*
       const expected = `
-      /**
-       * @typedef {PlainObject} ParentType
-       * @property {number} numName
-       */
-      /* `;
+/**
+ * @typedef {PlainObject} ParentType
+ * @property {number} numName
+ */
+`;
       const jsdoc = schemaToJSDoc(schemas[0], {
         formats: {
           special: {
@@ -674,7 +665,6 @@ describe('`jsdocToJsonSchema`', function () {
       });
       // log(jsdoc);
       expect(jsdoc).to.equal(expected);
-      */
     }
   );
 
@@ -718,15 +708,11 @@ describe('`jsdocToJsonSchema`', function () {
       title: 'SomeType'
     }]);
 
-    // Todo: Support making properties optional (and with defaults) by
-    //   `minItems` in json-schema-to-jsdoc
-    /*
     const jsdoc = schemaToJSDoc(schemas[0], 4, null, {
       array: 'GenericArray'
     });
     // log(jsdoc);
     expect(jsdoc).to.equal(arrayTypedef);
-    */
   });
 
   it('converts a simple array jsdoc block (no `minItems`)', function () {
@@ -768,16 +754,11 @@ describe('`jsdocToJsonSchema`', function () {
       title: 'SomeType'
     }]);
 
-    // Todo: Support making properties optional (and with defaults) by
-    //   `minItems` in json-schema-to-jsdoc:
-    //   https://github.com/n3ps/json-schema-to-jsdoc/pull/46
-    /*
     const jsdoc = schemaToJSDoc(schemas[0], 4, null, {
       array: 'GenericArray'
     });
     // log(jsdoc);
     expect(jsdoc).to.equal(arrayTypedef);
-    */
   });
 
   it('converts a nested object jsdoc block', function () {
@@ -808,11 +789,9 @@ describe('`jsdocToJsonSchema`', function () {
     };
     expect(schemas).to.deep.equal([expectedSchema]);
 
-    // Todo: Reenable after
-    //   https://github.com/n3ps/json-schema-to-jsdoc/pull/47
-    // const jsdoc = schemaToJSDoc(expectedSchema);
+    const jsdoc = schemaToJSDoc(expectedSchema);
     // log(jsdoc);
-    // expect(jsdoc).to.equal(nestedType);
+    expect(jsdoc).to.equal(nestedType);
   });
 
   it('converts a nested array jsdoc block', function () {
@@ -820,7 +799,7 @@ describe('`jsdocToJsonSchema`', function () {
     // log(schemas[0]);
     const expectedSchema = {
       type: 'array',
-      title: 'NestedType',
+      title: 'NestedArrayType',
       maxItems: 1,
       minItems: 1,
       items: [
