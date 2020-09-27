@@ -1,5 +1,11 @@
 # CHANGES for jsdoc-jsonschema
 
+## ?
+
+- Testing: Enable json-schema-to-jsdoc tests
+- npm: Update `package-lock.json` with latest on `json-schema-to-jsdoc`
+    `master`
+
 ## 0.10.0
 
 - Enhancement: Add binary
