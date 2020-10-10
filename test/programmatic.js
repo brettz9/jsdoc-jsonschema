@@ -886,11 +886,9 @@ describe('`jsdocToJsonSchema`', function () {
     };
     expect(schemas).to.deep.equal(expectedSchema);
 
-    // Todo: Reenable after
-    //   https://github.com/n3ps/json-schema-to-jsdoc/issues/41
-    // const jsdoc = schemaToJSDoc(expectedSchema);
+    const jsdoc = schemaToJSDoc(expectedSchema);
     // log(jsdoc);
-    // expect(jsdoc).to.equal(inheritedTypes);
+    expect(jsdoc).to.equal(inheritedTypes);
   });
 
   it('converts a hierarchical set of typedef blocks with union', function () {
@@ -987,11 +985,9 @@ describe('`jsdocToJsonSchema`', function () {
     };
     expect(schemas).to.deep.equal(expectedSchema);
 
-    // Todo: Reenable after
-    //   https://github.com/n3ps/json-schema-to-jsdoc/issues/41
-    // const jsdoc = schemaToJSDoc(expectedSchema);
+    const jsdoc = schemaToJSDoc(expectedSchema);
     // log(jsdoc);
-    // expect(jsdoc).to.equal(inheritedTypesWithUnion);
+    expect(jsdoc).to.equal(inheritedTypesWithUnion);
   });
 
   it(
@@ -1064,11 +1060,9 @@ describe('`jsdocToJsonSchema`', function () {
       };
       expect(schemas).to.deep.equal(expectedSchema);
 
-      // Todo: Reenable after
-      //   https://github.com/n3ps/json-schema-to-jsdoc/issues/41
-      // const jsdoc = schemaToJSDoc(expectedSchema);
+      const jsdoc = schemaToJSDoc(expectedSchema);
       // log(jsdoc);
-      // expect(jsdoc).to.equal(inheritedTypesWithIntersection);
+      expect(jsdoc).to.equal(inheritedTypesWithIntersection);
     }
   );
 
@@ -1188,11 +1182,9 @@ describe('`jsdocToJsonSchema`', function () {
       };
       expect(schemas).to.deep.equal(expectedSchema);
 
-      // Todo: Reenable after
-      //   https://github.com/n3ps/json-schema-to-jsdoc/issues/41
-      // const jsdoc = schemaToJSDoc(expectedSchema);
+      const jsdoc = schemaToJSDoc(expectedSchema);
       // log(jsdoc);
-      // expect(jsdoc).to.equal(inheritedTypesWithIntersectionAndUnion);
+      expect(jsdoc).to.equal(inheritedTypesWithIntersectionAndUnion);
     }
   );
 
@@ -1312,11 +1304,9 @@ describe('`jsdocToJsonSchema`', function () {
       };
       expect(schemas).to.deep.equal(expectedSchema);
 
-      // Todo: Reenable after
-      //   https://github.com/n3ps/json-schema-to-jsdoc/issues/41
-      // const jsdoc = schemaToJSDoc(expectedSchema);
+      const jsdoc = schemaToJSDoc(expectedSchema);
       // log(jsdoc);
-      // expect(jsdoc).to.equal(inheritedTypesWithUnionAndIntersection);
+      expect(jsdoc).to.equal(inheritedTypesWithUnionAndIntersection);
     }
   );
 
@@ -1367,13 +1357,9 @@ describe('`jsdocToJsonSchema`', function () {
       ]
     });
 
-    // Todo: Use or wait for PR for `json-schema-to-jsdoc` to support `allOf`?
-    //  https://github.com/n3ps/json-schema-to-jsdoc/pull/42
-    /*
     const jsdoc = schemaToJSDoc(schemas);
     // log(jsdoc);
     expect(jsdoc).to.equal(parentType + childType, 0);
-    */
 
     /*
     const jsdoc = schemaToJSDoc(schemas[0]);
