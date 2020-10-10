@@ -16,7 +16,7 @@ const hasOwn = (obj, prop) => {
 const isA = (typ) => {
   return {
     classRelation: 'is-a',
-    $ref: `$defs/${typ}`
+    $ref: `#/$defs/${typ}`
   };
 };
 
@@ -463,7 +463,7 @@ const jsdocToJsonSchema = (
           result.allOf = [
             {
               classRelation: 'is-a',
-              $ref: `$defs/${referent.title}`
+              $ref: `#/$defs/${referent.title}`
             }
           ];
         } else if (throwOnUnrecognizedName) {
@@ -482,21 +482,21 @@ const jsdocToJsonSchema = (
       if (result.allOf) {
         return !defs.find(({allOf}) => {
           return allOf && allOf.find(({$ref}) => {
-            return $ref === `$defs/${result.title}`;
+            return $ref === `#/$defs/${result.title}`;
           });
         });
       }
       if (result.anyOf) {
         return !defs.find(({anyOf}) => {
           return anyOf && anyOf.find(({$ref}) => {
-            return $ref === `$defs/${result.title}`;
+            return $ref === `#/$defs/${result.title}`;
           });
         });
       }
       return !jsonSchemaTypesAndLiterals.has(result.type) &&
         !defs.find(({allOf}) => {
           return allOf && allOf.find(({$ref}) => {
-            return $ref === `$defs/${result.title}`;
+            return $ref === `#/$defs/${result.title}`;
           });
         });
     });
@@ -508,7 +508,7 @@ const jsdocToJsonSchema = (
     ret.allOf = [
       {
         classRelation: 'is-a',
-        $ref: `$defs/${rootType.title}`
+        $ref: `#/$defs/${rootType.title}`
       }
     ];
     return ret;

@@ -1,8 +1,10 @@
 # CHANGES for jsdoc-jsonschema
 
-## ?
+## 0.10.1
 
-- Testing: Enable json-schema-to-jsdoc tests
+- Fix: Apply propr JSON references
+- Testing: Point to nested schema testing branch
+- Testing: Enable most `json-schema-to-jsdoc` tests
 - npm: Update `package-lock.json` with latest on `json-schema-to-jsdoc`
     `master`
 

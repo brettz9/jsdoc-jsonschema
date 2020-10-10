@@ -856,7 +856,7 @@ describe('`jsdocToJsonSchema`', function () {
           allOf: [
             {
               classRelation: 'is-a',
-              $ref: '$defs/Coordinate'
+              $ref: '#/$defs/Coordinate'
             }
           ]
         },
@@ -872,7 +872,7 @@ describe('`jsdocToJsonSchema`', function () {
           allOf: [
             {
               classRelation: 'is-a',
-              $ref: '$defs/Circle'
+              $ref: '#/$defs/Circle'
             }
           ]
         }
@@ -880,7 +880,7 @@ describe('`jsdocToJsonSchema`', function () {
       allOf: [
         {
           classRelation: 'is-a',
-          $ref: '$defs/ColoredShape'
+          $ref: '#/$defs/ColoredShape'
         }
       ]
     };
@@ -932,7 +932,7 @@ describe('`jsdocToJsonSchema`', function () {
           },
           allOf: [
             {
-              $ref: '$defs/Coordinate',
+              $ref: '#/$defs/Coordinate',
               classRelation: 'is-a'
             }
           ]
@@ -951,7 +951,7 @@ describe('`jsdocToJsonSchema`', function () {
           allOf: [
             {
               classRelation: 'is-a',
-              $ref: '$defs/Coordinate'
+              $ref: '#/$defs/Coordinate'
             }
           ]
         },
@@ -969,11 +969,11 @@ describe('`jsdocToJsonSchema`', function () {
           anyOf: [
             {
               classRelation: 'is-a',
-              $ref: '$defs/Circle'
+              $ref: '#/$defs/Circle'
             },
             {
               classRelation: 'is-a',
-              $ref: '$defs/Rectangle'
+              $ref: '#/$defs/Rectangle'
             }
           ]
         }
@@ -981,7 +981,7 @@ describe('`jsdocToJsonSchema`', function () {
       allOf: [
         {
           classRelation: 'is-a',
-          $ref: '$defs/ColoredShape'
+          $ref: '#/$defs/ColoredShape'
         }
       ]
     };
@@ -1046,11 +1046,11 @@ describe('`jsdocToJsonSchema`', function () {
             allOf: [
               {
                 classRelation: 'is-a',
-                $ref: '$defs/PointType'
+                $ref: '#/$defs/PointType'
               },
               {
                 classRelation: 'is-a',
-                $ref: '$defs/ColoredType'
+                $ref: '#/$defs/ColoredType'
               }
             ]
           }
@@ -1058,7 +1058,7 @@ describe('`jsdocToJsonSchema`', function () {
         allOf: [
           {
             classRelation: 'is-a',
-            $ref: '$defs/Circle'
+            $ref: '#/$defs/Circle'
           }
         ]
       };
@@ -1125,7 +1125,7 @@ describe('`jsdocToJsonSchema`', function () {
             },
             allOf: [
               {
-                $ref: '$defs/Coordinate',
+                $ref: '#/$defs/Coordinate',
                 classRelation: 'is-a'
               }
             ]
@@ -1144,7 +1144,7 @@ describe('`jsdocToJsonSchema`', function () {
             allOf: [
               {
                 classRelation: 'is-a',
-                $ref: '$defs/Coordinate'
+                $ref: '#/$defs/Coordinate'
               }
             ]
           },
@@ -1162,17 +1162,17 @@ describe('`jsdocToJsonSchema`', function () {
             allOf: [
               {
                 classRelation: 'is-a',
-                $ref: '$defs/ShapeInfo'
+                $ref: '#/$defs/ShapeInfo'
               },
               {
                 anyOf: [
                   {
                     classRelation: 'is-a',
-                    $ref: '$defs/Circle'
+                    $ref: '#/$defs/Circle'
                   },
                   {
                     classRelation: 'is-a',
-                    $ref: '$defs/Rectangle'
+                    $ref: '#/$defs/Rectangle'
                   }
                 ]
               }
@@ -1182,7 +1182,7 @@ describe('`jsdocToJsonSchema`', function () {
         allOf: [
           {
             classRelation: 'is-a',
-            $ref: '$defs/PositionedShape3D'
+            $ref: '#/$defs/PositionedShape3D'
           }
         ]
       };
@@ -1249,7 +1249,7 @@ describe('`jsdocToJsonSchema`', function () {
             },
             allOf: [
               {
-                $ref: '$defs/Coordinate',
+                $ref: '#/$defs/Coordinate',
                 classRelation: 'is-a'
               }
             ]
@@ -1268,7 +1268,7 @@ describe('`jsdocToJsonSchema`', function () {
             allOf: [
               {
                 classRelation: 'is-a',
-                $ref: '$defs/Coordinate'
+                $ref: '#/$defs/Coordinate'
               }
             ]
           },
@@ -1286,17 +1286,17 @@ describe('`jsdocToJsonSchema`', function () {
             anyOf: [
               {
                 classRelation: 'is-a',
-                $ref: '$defs/ShapeInfo'
+                $ref: '#/$defs/ShapeInfo'
               },
               {
                 allOf: [
                   {
                     classRelation: 'is-a',
-                    $ref: '$defs/Circle'
+                    $ref: '#/$defs/Circle'
                   },
                   {
                     classRelation: 'is-a',
-                    $ref: '$defs/Rectangle'
+                    $ref: '#/$defs/Rectangle'
                   }
                 ]
               }
@@ -1306,7 +1306,7 @@ describe('`jsdocToJsonSchema`', function () {
         allOf: [
           {
             classRelation: 'is-a',
-            $ref: '$defs/PositionedShape3D'
+            $ref: '#/$defs/PositionedShape3D'
           }
         ]
       };
@@ -1354,7 +1354,7 @@ describe('`jsdocToJsonSchema`', function () {
           allOf: [
             {
               classRelation: 'is-a',
-              $ref: '$defs/ParentType'
+              $ref: '#/$defs/ParentType'
             }
           ]
         }
@@ -1362,7 +1362,7 @@ describe('`jsdocToJsonSchema`', function () {
       allOf: [
         {
           classRelation: 'is-a',
-          $ref: '$defs/ChildType'
+          $ref: '#/$defs/ChildType'
         }
       ]
     });
@@ -1415,7 +1415,7 @@ describe('`jsdocToJsonSchema`', function () {
       },
       allOf: [
         {
-          $ref: '$defs/HasMissingReference',
+          $ref: '#/$defs/HasMissingReference',
           classRelation: 'is-a'
         }
       ]
