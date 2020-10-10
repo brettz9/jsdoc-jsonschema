@@ -7,6 +7,7 @@
 - Testing: Enable most `json-schema-to-jsdoc` tests
 - npm: Update `package-lock.json` with latest on `json-schema-to-jsdoc`
     `master`
+- npm: Update devDeps.
 
 ## 0.10.0
 
