@@ -1,5 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
+## ?
+
+- Testing: Switch to stable version of `mocha-multi-reporters`
+
 ## 0.10.1
 
 - Fix: Apply propr JSON references

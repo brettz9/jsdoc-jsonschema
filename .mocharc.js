@@ -4,7 +4,7 @@ module.exports = {
   'inline-diffs': true,
   delay: false,
   exclude: 'test/*/**',
-  reporter: 'cypress-multi-reporters',
+  reporter: 'mocha-multi-reporters',
   'reporter-option': [
     'configFile=mocha-multi-reporters.json'
   ],
