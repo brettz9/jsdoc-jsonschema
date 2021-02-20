@@ -152,7 +152,7 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 1. Add whitelist option so only get desired typedef and its parents out of
     a file (may be useful with `command-line-basics`).
 1. Add support in `json-schema-to-jsdoc`
-    ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41)
+    ([#41](https://github.com/n3ps/json-schema-to-jsdoc/issues/41))
     for `@typedef`'s referencing other `@typedef`'s to complete commented
     out sanity checks in tests; resume using stable version once may be merged
 
