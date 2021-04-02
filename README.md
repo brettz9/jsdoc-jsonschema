@@ -168,7 +168,6 @@ within jsdoc comments into suitable schema features (e.g., intersections).
     of interest (by whitelist and/or blacklist)
 1. Option to **save to file** (based on `@typedef` tag name and/or other
     custom tags?)
-1. **Binary**
 1. Add method to support **parsing entire `import`/`require` pipeline** for
     `@typedef`'s for conversion to schemas (could use
     [es-file-traverse](https://github.com/brettz9/es-file-traverse))
