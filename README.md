@@ -149,6 +149,8 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## To-dos
 
+1. Get binary to support saving separate typedefs within a file to
+    different output files
 1. Add whitelist option so only get desired typedef and its parents out of
     a file (may be useful with `command-line-basics`).
 1. Add support in `json-schema-to-jsdoc`
