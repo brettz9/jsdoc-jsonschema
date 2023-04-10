@@ -1,7 +1,12 @@
 # CHANGES for jsdoc-jsonschema
 
-## ?
+## 0.11.0
 
+BREAKING CHANGE: Requires Node 14
+
+- refactor: ESM
+- chore: updates `command-line-basics`, `comment-parser`, devDeps.
+- chore: switch to pnpm
 - Testing: Switch to stable version of `mocha-multi-reporters`
 
 ## 0.10.1

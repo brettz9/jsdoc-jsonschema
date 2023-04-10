@@ -1,7 +1,7 @@
 {
   "name": "jsdoc-jsonschema",
   "type": "module",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
   "main": "src/index.js",
   "bin": {
