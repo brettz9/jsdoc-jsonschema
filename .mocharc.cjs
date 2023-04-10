@@ -9,6 +9,6 @@ module.exports = {
     'configFile=mocha-multi-reporters.json'
   ],
   require: [
-    'chai/register-expect'
+    'chai/register-expect.js'
   ]
 };

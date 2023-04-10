@@ -1,6 +1,10 @@
-'use strict';
+import {readFile} from 'fs/promises';
+import {fileURLToPath} from 'url';
+import {join, dirname} from 'path';
 
-const pkg = require('../package.json');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const pkg = JSON.parse(await readFile(join(__dirname, '../package.json')));
 
 // Todo: We really ought to dogfood this based on `src/index.js`, and
 //  even have a library to auto-convert JSON Schema into the structure below,
@@ -100,5 +104,4 @@ const cliSections = [
   }
 ];
 
-exports.definitions = optionDefinitions;
-exports.sections = cliSections;
+export {optionDefinitions as definitions, cliSections as sections};

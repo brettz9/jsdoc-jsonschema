@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-'use strict';
 
-const {join} = require('path');
+import {join, dirname} from 'path';
+import {fileURLToPath} from 'url';
+import {cliBasics} from 'command-line-basics';
+import {jsdocFileToJsonSchema} from '../src/index.js';
 
-const {cliBasics} = require('command-line-basics');
-const {jsdocFileToJsonSchema} = require('../src/index.js');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const optionDefinitions = cliBasics(
+const optionDefinitions = await cliBasics(
   join(__dirname, '../src/optionDefinitions.js')
 );
 
@@ -14,7 +15,6 @@ if (!optionDefinitions) { // cliBasics handled
   process.exit();
 }
 
-(async () => {
 try {
   await jsdocFileToJsonSchema(optionDefinitions);
   console.log(`Finished writing files!`);
@@ -22,4 +22,3 @@ try {
   console.error(err);
   process.exit();
 }
-})();

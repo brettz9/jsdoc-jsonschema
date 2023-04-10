@@ -1,10 +1,8 @@
-'use strict';
-
-const {readFile: origReadFile, writeFile: origWriteFile} = require('fs');
-const {promisify} = require('util');
-const {resolve} = require('path');
-const commentParser = require('comment-parser');
-const {parse: typeParser} = require('jsdoctypeparser');
+import {readFile as origReadFile, writeFile as origWriteFile} from 'fs';
+import {promisify} from 'util';
+import {resolve} from 'path';
+import {parse as commentParser} from 'comment-parser';
+import {parse as typeParser} from 'jsdoctypeparser';
 
 const readFile = promisify(origReadFile);
 const writeFile = promisify(origWriteFile);
@@ -236,8 +234,10 @@ const jsdocFileToJsonSchema = async (cfg) => {
   // Todo: Could really make this config feature, and file retrieval method as
   //   a whole as utilities of `command-line-basics`
   const opts = cfg.configPath
-    // eslint-disable-next-line import/no-dynamic-require -- User path
-    ? {...require(resolve(process.cwd(), cfg.configPath)), ...cfg}
+    ? {...(
+      // eslint-disable-next-line no-unsanitized/method -- User path
+      await import(resolve(process.cwd(), cfg.configPath))
+    ).default, ...cfg}
     : cfg;
   if (!opts.file) {
     throw new Error(
@@ -339,7 +339,7 @@ const jsdocToJsonSchema = (
        * @param {string} nme
        * @param {string} namePath
        * @param {Node} typeNode
-       * @param {object<string,Property>} properties
+       * @param {Object<string,Property>} properties
        * @param {string[]} required
        * @param {JSONSchema} parentSchema
        * @throws {TypeError}
@@ -437,9 +437,7 @@ const jsdocToJsonSchema = (
     // console.log('nameMap', nameMap);
 
     return rootSchema;
-  }).filter((jsonSchema) => {
-    return jsonSchema;
-  });
+  }).filter(Boolean);
 
   if ($defs) {
     const resultsCopy = JSON.parse(JSON.stringify(results));
@@ -480,22 +478,22 @@ const jsdocToJsonSchema = (
 
     const rootType = [...results].reverse().find((result) => {
       if (result.allOf) {
-        return !defs.find(({allOf}) => {
-          return allOf && allOf.find(({$ref}) => {
+        return !defs.some(({allOf}) => {
+          return allOf && allOf.some(({$ref}) => {
             return $ref === `#/$defs/${result.title}`;
           });
         });
       }
       if (result.anyOf) {
-        return !defs.find(({anyOf}) => {
-          return anyOf && anyOf.find(({$ref}) => {
+        return !defs.some(({anyOf}) => {
+          return anyOf && anyOf.some(({$ref}) => {
             return $ref === `#/$defs/${result.title}`;
           });
         });
       }
       return !jsonSchemaTypesAndLiterals.has(result.type) &&
-        !defs.find(({allOf}) => {
-          return allOf && allOf.find(({$ref}) => {
+        !defs.some(({allOf}) => {
+          return allOf && allOf.some(({$ref}) => {
             return $ref === `#/$defs/${result.title}`;
           });
         });
@@ -517,5 +515,4 @@ const jsdocToJsonSchema = (
   return results;
 };
 
-exports.jsdocFileToJsonSchema = jsdocFileToJsonSchema;
-exports.jsdocToJsonSchema = jsdocToJsonSchema;
+export {jsdocFileToJsonSchema, jsdocToJsonSchema};

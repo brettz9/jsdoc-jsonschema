@@ -78,7 +78,7 @@ npm i jsdoc-jsonschema
 ## Usage
 
 ```js
-const {jsdocToJsonSchema} = require('jsdoc-jsonschema');
+import {jsdocToJsonSchema} from 'jsdoc-jsonschema';
 
 jsdocToJsonSchema(`
   /**

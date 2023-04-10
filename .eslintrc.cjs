@@ -2,12 +2,13 @@
 
 module.exports = {
   extends: [
-    'ash-nazg/sauron',
-    'plugin:node/recommended-script'
+    'ash-nazg/sauron-node-overrides'
   ],
+  parserOptions: {
+    ecmaVersion: 2022
+  },
   env: {
-    browser: false,
-    es6: true
+    browser: false
   },
   settings: {
     polyfills: [
@@ -23,9 +24,11 @@ module.exports = {
   overrides: [{
     files: ['test/**', 'bin/**'],
     extends: [
-      'ash-nazg/sauron-node',
-      'plugin:node/recommended-script'
+      'ash-nazg/sauron-node'
     ],
+    parserOptions: {
+      ecmaVersion: 2022
+    },
     env: {
       mocha: true
     },
@@ -33,22 +36,28 @@ module.exports = {
       expect: true
     },
     rules: {
-      // Reenabled by recommended-script
-      'no-process-exit': 0,
-
       'no-console': 0,
-      'node/exports-style': 0,
+      'n/exports-style': 0,
 
       // Browser only
       'compat/compat': 0,
       'import/no-commonjs': 0
     }
   }, {
-    files: ['*.md'],
+    files: ['test/fixtures/*.js'],
+    rules: {
+      'import/unambiguous': 0,
+      'unicorn/no-empty-file': 0
+    }
+  }, {
+    files: ['*.md/*.js'],
     globals: {
     },
     rules: {
-      'node/no-missing-require': ['error', {
+      'import/no-unresolved': ['error', {
+        ignore: ['jsdoc-jsonschema']
+      }],
+      'n/no-missing-require': ['error', {
         allowModules: ['jsdoc-jsonschema']
       }],
       'no-unused-vars': ['error', {

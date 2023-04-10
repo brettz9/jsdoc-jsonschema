@@ -1,5 +1,3 @@
-'use strict';
-
 /*
 Note: Keep using `json-schema-to-jsdoc` at
   https://github.com/n3ps/json-schema-to-jsdoc
@@ -7,10 +5,11 @@ Note: Keep using `json-schema-to-jsdoc` at
   in other direction)
 */
 
-const util = require('util');
-const chai = require('chai');
-const jsonSchemaToJSDoc = require('json-schema-to-jsdoc');
-const {jsdocToJsonSchema} = require('../');
+import util from 'util';
+// eslint-disable-next-line no-shadow -- Required
+import chai from 'chai';
+import jsonSchemaToJSDoc from 'json-schema-to-jsdoc';
+import {jsdocToJsonSchema} from '../src/index.js';
 
 const schemaToJSDoc = (expectedSchema, indent = 0, opts = {}, types = {}) => {
   return '\n' + jsonSchemaToJSDoc(expectedSchema, {
