@@ -5,6 +5,7 @@
 BREAKING CHANGE: Requires Node 16.9+
 
 - chore: Bump Node `engines` to 16.9+
+- feat: support mixed array types
 
 ## 0.12.0
 

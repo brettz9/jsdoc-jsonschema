@@ -1410,6 +1410,38 @@ describe('`jsdocToJsonSchema`', function () {
     ]);
   });
 
+  it('supports array + anyOf type', function () {
+    const docWithArrayJSDocType = `
+      /**
+       * @typedef JSDocType
+       * @property {string[]|number[]} jsdocNameWithArrayType
+       */
+    `;
+    const schemas = jsdocToJsonSchema(docWithArrayJSDocType);
+    expect(schemas).to.deep.equal([
+      {
+        type: 'object',
+        title: 'JSDocType',
+        required: ['jsdocNameWithArrayType'],
+        properties: {
+          jsdocNameWithArrayType: {
+            type: 'array',
+            items: {
+              anyOf: [
+                {
+                  type: 'string'
+                },
+                {
+                  type: 'number'
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]);
+  });
+
   it('avoids throwing with `throwOnUnrecognizedName: false`', function () {
     const docWithMissingReference = `
       /**

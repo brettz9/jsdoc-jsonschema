@@ -196,14 +196,30 @@ function getSchemaBase (type, typeNode, {
           ? 'integer'
           : 'number';
       } else {
-        const anyOf = recurseCheckType(
+        let anyOf = recurseCheckType(
           typeNode, 'NAME', 'name', isA, []
         );
         if (!anyOf) {
-          throw new TypeError(
-            'There is currently no support for mixed-type or ' +
-              'non-string/number enums'
+          anyOf = recurseCheckType(
+            typeNode, 'GENERIC', 'objects', ([{name}]) => {
+              return {
+                type: name
+              };
+            }, []
           );
+          if (!anyOf) {
+            throw new TypeError(
+              'There is currently no support for mixed-type or ' +
+                'non-string/number enums'
+            );
+          }
+
+          return {
+            type: 'array',
+            items: {
+              anyOf
+            }
+          };
         }
 
         return {

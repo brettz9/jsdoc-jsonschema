@@ -50,6 +50,7 @@ from having to build both.
 | `@typedef {SomeType & (AnotherType \| YetAnotherType)}` | `{allOf: [{classRelation: 'is-a', $ref: '$defs/SomeType'}, {anyOf: [{classRelation: 'is-a', $ref: '$defs/AnotherType'}, {classRelation: 'is-a', $ref: '$defs/YetAnotherType'}]}]}` | Inner parenthesized unions and/or intersections
 | `@property {integer} [propName] Prop desc.` | `{properties: {propName: {type: 'integer', description: 'Prop desc.'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
 | `@property {string[]} [propName] Prop. desc.` | `{properties: {propName: {type: 'array', description: 'Prop desc.', items: {type: 'string'}}}}`
+| `@property {string[]|number[]} [propName] Prop. desc.` | `{properties: {propName: {type: 'array', description: 'Prop desc.', items: {anyOf: [{type: 'string'}, {type: 'number'}]}}}}`
 
 ## FAQ
 
