@@ -49,6 +49,7 @@ from having to build both.
 | `@typedef {3\|4\|5}` | `{type: 'number', enum: [3, 4, 5]}` | Can force to `integer` type
 | `@typedef {SomeType & (AnotherType \| YetAnotherType)}` | `{allOf: [{classRelation: 'is-a', $ref: '$defs/SomeType'}, {anyOf: [{classRelation: 'is-a', $ref: '$defs/AnotherType'}, {classRelation: 'is-a', $ref: '$defs/YetAnotherType'}]}]}` | Inner parenthesized unions and/or intersections
 | `@property {integer} [propName] Prop desc.` | `{properties: {propName: {type: 'integer', description: 'Prop desc.'}}}` | Supported JSON Schema types: 'null', 'boolean', 'object', 'array', 'number', 'string', 'integer'; with `tolerateCase` option not disabled, will allow `Integer`, etc., as well
+| `@property {string[]} [propName] Prop. desc.` | `{properties: {propName: {type: 'array', description: 'Prop desc.', items: {type: 'string'}}}}`
 
 ## FAQ
 
@@ -149,6 +150,7 @@ within jsdoc comments into suitable schema features (e.g., intersections).
 
 ## To-dos
 
+1. Switch from `jsdoctypeparser` to `jsdoc-type-pratt-parser`
 1. Get binary to support saving separate typedefs within a file to
     different output files
 1. Add whitelist option so only get desired typedef and its parents out of

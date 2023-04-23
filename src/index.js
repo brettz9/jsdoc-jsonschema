@@ -219,6 +219,17 @@ function getSchemaBase (type, typeNode, {
       allOf
     };
     break;
+  } case 'GENERIC': {
+    if (typeNode?.subject?.name === 'Array' && typeNode?.objects.length === 1) {
+      schema = {
+        type: 'array',
+        items: {
+          type: typeNode.objects[0].name
+        }
+      };
+      break;
+    }
+    // Fallthrough
   } default:
     throw new TypeError(`Unsupported jsdoc type ${typeNode.type}`);
   }

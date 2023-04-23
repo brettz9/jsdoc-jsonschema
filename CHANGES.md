@@ -1,5 +1,9 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.12.0
+
+- feat: support simple array
+
 ## 0.11.0
 
 BREAKING CHANGE: Requires Node 14

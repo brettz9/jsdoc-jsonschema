@@ -1385,6 +1385,31 @@ describe('`jsdocToJsonSchema`', function () {
     */
   });
 
+  it('throws with non-supported jsdoc type', function () {
+    const docWithArrayJSDocType = `
+      /**
+       * @typedef JSDocType
+       * @property {string[]} jsdocNameWithArrayType
+       */
+    `;
+    const schemas = jsdocToJsonSchema(docWithArrayJSDocType);
+    expect(schemas).to.deep.equal([
+      {
+        type: 'object',
+        title: 'JSDocType',
+        required: ['jsdocNameWithArrayType'],
+        properties: {
+          jsdocNameWithArrayType: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          }
+        }
+      }
+    ]);
+  });
+
   it('avoids throwing with `throwOnUnrecognizedName: false`', function () {
     const docWithMissingReference = `
       /**
