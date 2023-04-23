@@ -1,15 +1,9 @@
-import {readFile as origReadFile, writeFile as origWriteFile} from 'fs';
-import {promisify} from 'util';
+import {readFile, writeFile} from 'fs/promises';
 import {resolve} from 'path';
 import {parse as commentParser} from 'comment-parser';
 import {parse as typeParser} from 'jsdoctypeparser';
 
-const readFile = promisify(origReadFile);
-const writeFile = promisify(origWriteFile);
-
-const hasOwn = (obj, prop) => {
-  return {}.hasOwnProperty.call(obj, prop);
-};
+const {hasOwn} = Object;
 
 const isA = (typ) => {
   return {
@@ -42,6 +36,23 @@ function parseOtherEnum (typeNameVal) {
 
 const JSONParse = JSON.parse.bind(JSON);
 
+/**
+ * @typedef {Array<
+ *   {anyOf: Collector}|
+ *   {allOf: Collector}|
+ *   boolean|string|number|
+ *   {classRelation: 'is-a', $ref: string}
+ * >} Collector
+ */
+
+/**
+ * @param {JSDocTypeParserNode} node
+ * @param {NAME|STRING_VALUE|NUMBER_VALUE} nodeType
+ * @param {string|number|name} property
+ * @param {() => string|() => number|parseOtherEnum|isA} converter
+ * @param {Collector} collector
+ * @returns {false|Collector}
+ */
 const recurseCheckType = (
   node, nodeType, property, converter, collector
 ) => {

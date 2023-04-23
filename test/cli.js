@@ -1,4 +1,4 @@
-import {readFile as rf, unlink as ul} from 'fs';
+import {readFile, unlink} from 'fs/promises';
 import {fileURLToPath} from 'url';
 import {promisify} from 'util';
 import {join, dirname} from 'path';
@@ -6,9 +6,7 @@ import {execFile as ef} from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const readFile = promisify(rf);
 const execFile = promisify(ef);
-const unlink = promisify(ul);
 
 const binFile = join(__dirname, '../bin/cli.js');
 

@@ -1,5 +1,11 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.13.0
+
+BREAKING CHANGE: Requires Node 16.9+
+
+- chore: Bump Node `engines` to 16.9+
+
 ## 0.12.0
 
 - feat: support simple array

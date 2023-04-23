@@ -44,7 +44,7 @@
   "bugs": "https://github.com/brettz9/jsdoc-jsonschema/issues",
   "homepage": "https://github.com/brettz9/jsdoc-jsonschema#readme",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.9.0"
   },
   "dependencies": {
     "command-line-basics": "^1.1.0",

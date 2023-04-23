@@ -11,6 +11,9 @@ module.exports = {
     browser: false
   },
   settings: {
+    jsdoc: {
+      mode: 'typescript'
+    },
     polyfills: [
       'Number.isInteger',
       'Number.parseFloat',
