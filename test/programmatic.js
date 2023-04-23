@@ -1385,7 +1385,7 @@ describe('`jsdocToJsonSchema`', function () {
     */
   });
 
-  it('throws with non-supported jsdoc type', function () {
+  it('supports array type', function () {
     const docWithArrayJSDocType = `
       /**
        * @typedef JSDocType
