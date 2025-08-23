@@ -1,7 +1,7 @@
 {
   "name": "jsdoc-jsonschema",
   "type": "module",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Convert standard JSDoc `@typedef` comment blocks into JSON Schema (with support for nonstandard expansions)",
   "main": "src/index.js",
   "bin": {
@@ -44,7 +44,7 @@
   "bugs": "https://github.com/brettz9/jsdoc-jsonschema/issues",
   "homepage": "https://github.com/brettz9/jsdoc-jsonschema#readme",
   "engines": {
-    "node": ">=16.9.0"
+    "node": "^20.11.0 >=22.0.0"
   },
   "dependencies": {
     "command-line-basics": "^1.1.0",

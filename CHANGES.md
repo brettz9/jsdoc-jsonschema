@@ -1,5 +1,11 @@
 # CHANGES for jsdoc-jsonschema
 
+## 0.14.0 (unreleased)
+
+BREAKING CHANGE: Requires Node ^20.11.0 >=22.0.0
+
+- fix: supply `command-line-basics` notifier info
+
 ## 0.13.0
 
 BREAKING CHANGE: Requires Node 16.9+
