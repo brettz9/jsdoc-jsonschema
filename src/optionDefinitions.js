@@ -20,7 +20,7 @@ const pkg = JSON.parse(await readFile(join(__dirname, '../package.json')));
 /* eslint-enable jsdoc/require-property -- Should build schema */
 
 const getChalkTemplateSingleEscape = (s) => {
-  return s.replace(/[{}\\]/gu, (ch) => {
+  return s.replaceAll(/[\{\}\\]/gv, (ch) => {
     return `\\u${ch.codePointAt().toString(16).padStart(4, '0')}`;
   });
 };
@@ -40,7 +40,7 @@ const optionDefinitions = [
         return numVal;
       }
       // eslint-disable-next-line prefer-named-capture-group -- Simple
-      return val.replace(/['"](.*)['"]/u, '$1');
+      return val.replace(/['"](.*)['"]/v, '$1');
     },
     description: 'Used as the third `space` argument of `JSON.stringify`. ' +
       'Defaults to `2`.',

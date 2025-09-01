@@ -1,0 +1,3 @@
+ignoredBuiltDependencies:
+  - es5-ext
+  - unrs-resolver

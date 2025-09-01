@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/test-check-exception -- Ok */
 /*
 Note: Keep using `json-schema-to-jsdoc` at
   https://github.com/n3ps/json-schema-to-jsdoc
@@ -6,8 +7,8 @@ Note: Keep using `json-schema-to-jsdoc` at
 */
 
 import util from 'util';
-// eslint-disable-next-line no-shadow -- Required
-import chai from 'chai';
+import * as chai from 'chai';
+import {expect} from 'chai';
 import jsonSchemaToJSDoc from 'json-schema-to-jsdoc';
 import {jsdocToJsonSchema} from '../src/index.js';
 

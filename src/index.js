@@ -34,7 +34,7 @@ function parseOtherEnum (typeNameVal) {
   return typeNameVal === 'true';
 }
 
-const JSONParse = JSON.parse.bind(JSON);
+const jsonParse = JSON.parse.bind(JSON);
 
 /**
  * @typedef {Array<
@@ -273,7 +273,7 @@ const jsdocFileToJsonSchema = async (cfg) => {
   //   a whole as utilities of `command-line-basics`
   const opts = cfg.configPath
     ? {...(
-      // eslint-disable-next-line no-unsanitized/method -- User path
+      // // eslint-disable-next-line no-unsanitized/method -- User path
       await import(resolve(process.cwd(), cfg.configPath))
     ).default, ...cfg}
     : cfg;
@@ -287,7 +287,7 @@ const jsdocFileToJsonSchema = async (cfg) => {
   }));
   await Promise.all(jsdocStrs.map((jsdocStr, i) => {
     const f = (opts.outputPath && opts.outputPath[i]) ||
-      opts.file[i].replace(/\.js$/u, '.json');
+      opts.file[i].replace(/\.js$/v, '.json');
     const jsonSchema = jsdocToJsonSchema(jsdocStr, opts);
     return writeFile(
       f,
@@ -400,7 +400,7 @@ const jsdocToJsonSchema = (
           property.description = description;
         }
         if (dflt) {
-          property.default = JSONParse(dflt);
+          property.default = jsonParse(dflt);
         }
 
         if (namePath) {
@@ -478,6 +478,8 @@ const jsdocToJsonSchema = (
   }).filter(Boolean);
 
   if ($defs) {
+    // eslint-disable-next-line @stylistic/max-len -- Long
+    // eslint-disable-next-line unicorn/prefer-structured-clone -- Only want JSON
     const resultsCopy = JSON.parse(JSON.stringify(results));
     const ret = resultsCopy.reduce((obj, result, i) => {
       if (!hasOwn(result, 'title')) {
@@ -514,7 +516,7 @@ const jsdocToJsonSchema = (
 
     const defs = Object.values(ret.$defs);
 
-    const rootType = [...results].reverse().find((result) => {
+    const rootType = [...results].toReversed().find((result) => {
       if (result.allOf) {
         return !defs.some(({allOf}) => {
           return allOf && allOf.some(({$ref}) => {

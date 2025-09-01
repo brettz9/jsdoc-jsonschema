@@ -4,3 +4,4 @@ coverage
 mocha-multi-reporters.json
 .travis.yml
 .mocharc.js
+eslint.config.js

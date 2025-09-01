@@ -2,9 +2,10 @@
 
 ## 0.14.0 (unreleased)
 
-BREAKING CHANGE: Requires Node ^20.11.0 >=22.0.0
+BREAKING CHANGE: Requires Node ^20.11.0 || >=22.0.0
 
 - fix: supply `command-line-basics` notifier info
+- chore: update command-line-basics, comment-parser, devDeps.; lint
 
 ## 0.13.0
 

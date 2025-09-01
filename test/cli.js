@@ -3,6 +3,7 @@ import {fileURLToPath} from 'url';
 import {promisify} from 'util';
 import {join, dirname} from 'path';
 import {execFile as ef} from 'child_process';
+import {expect} from 'chai';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
